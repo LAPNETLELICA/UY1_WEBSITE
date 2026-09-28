@@ -18,7 +18,7 @@ export function SiteFooter() {
           </Link>
           <p>Curiosity in the classroom. Discovery in the laboratory. Knowledge in service of society.</p>
         </div>
-        <div className="footer-column"><h3>Explore</h3><Link href="/faculty">About the faculty</Link><Link href="/departments">Departments</Link><Link href="/programs">Academic programmes</Link><Link href="/research">Research</Link></div>
+        <div className="footer-column"><h3>Explore</h3><Link href="/about">About Us</Link><Link href="/departments">Departments</Link><Link href="/programs">Academic programmes</Link><Link href="/research">Research</Link></div>
         <div className="footer-column"><h3>For students</h3><Link href="/timetables">Class timetables <ArrowUpRight size={13} /></Link><Link href="/documents">Documents & forms</Link><Link href="/events">Academic calendar</Link><Link href="/news">Faculty news</Link></div>
         <div className="footer-column footer-contact"><h3>Find us</h3><p><MapPin size={15} /> Ngoa-Ekellé, Yaoundé, Cameroon</p><a href="mailto:facsciences@uy1.uninet.cm"><Mail size={15} /> facsciences@uy1.uninet.cm</a><a href="tel:+237222234496"><Phone size={15} /> +237 222 23 44 96</a></div>
       </div>

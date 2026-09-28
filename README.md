@@ -13,11 +13,10 @@ The University seal was supplied at `/home/lelica/Downloads/univ_Yaoundé_1.png`
 Requirements: Node.js 20.9+ and npm.
 
 1. `npm install`
-2. Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `NEXT_PUBLIC_SITE_URL`.
-3. Apply `supabase/migrations/202609280001_initial_schema.sql` and then `supabase/migrations/202609280002_admin_usernames.sql` to a dedicated Supabase project.
+2. Set `NEXT_PUBLIC_SUPABASE_URL` (the project API URL, `https://<project-ref>.supabase.co`), `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `NEXT_PUBLIC_SITE_URL` in `.env.local`.
+3. Apply `supabase/migrations/202609280001_initial_schema.sql`, `supabase/migrations/202609280002_admin_usernames.sql`, and `supabase/migrations/202609280003_faculty_content_architecture.sql` to a dedicated Supabase project.
 4. Set `SUPABASE_SERVICE_ROLE_KEY` in the server environment for admin name lookup; never expose it to browser code or use a `NEXT_PUBLIC_` prefix.
 5. Run `npm run dev` and open `http://localhost:3000`.
-6. Run `npm run build` for production validation.
 
 No service-role secret belongs in the browser or `NEXT_PUBLIC_*` variables. Keep Supabase environments separate for development and production.
 
@@ -26,7 +25,7 @@ No service-role secret belongs in the browser or `NEXT_PUBLIC_*` variables. Keep
 - PostgreSQL tables and relationships are defined in `supabase/migrations/`.
 - Public reads are limited to active/public/published content by RLS. Writes require an authenticated `admin_profiles` user.
 - Student accounts are not part of the product. Timetable lookup is public.
-- Create an administrator through Supabase Auth, then add the matching `auth.users.id` and display name to `public.admin_profiles` using the SQL editor as a trusted operator. Add the corresponding username and Auth email to `public.admin_login_identities` (see the second migration). The login form accepts that username and the Auth password; do not allow self-enrollment as an administrator.
+- Create an administrator through Supabase Auth, then add the matching `auth.users.id` and display name to `public.admin_profiles` using the SQL editor as a trusted operator. Add the corresponding username and Auth email to `public.admin_login_identities` (see the second migration). The login form accepts that username and the Auth password; do not allow self-enrollment as an administrator. The third migration adds specialties and department/specialty links across programmes, research, news, events, gallery, documentation and timetables.
 - The migration creates a public `faculty-public` media bucket for public images and published documents; validate MIME types and file size in the UI and database. Do not store confidential material in this bucket. For stricter document privacy, use a private bucket and signed URLs.
 - Review all RLS policies with the university security team before production. The service role bypasses RLS and must remain server-side only.
 
@@ -34,7 +33,7 @@ Tables include admin profiles, departments, programs, timetables and timetable e
 
 ## Current scope
 
-The homepage, responsive navigation, information sections, public timetable lookup UI, administrator sign-in, baseline Supabase schema/RLS, SEO metadata, sitemap and robots routes are implemented. The admin dashboard is an authenticated foundation and content-management surfaces require follow-up CRUD forms, file workflows, validation and institutional sign-off. When Supabase is not configured, the timetable and admin interfaces explicitly report setup status rather than fabricating live data.
+The site includes department and specialty pages, linked public content detail pages, a public timetable lookup, and an authenticated admin workspace for faculty information, departments, specialties, programmes, research, news, events, gallery, documents, timetables and timetable entries. Admin content changes are written to Supabase; public pages read published content. When the database migration is not applied or Supabase is not configured, some pages use static department fallbacks or display empty published-content sections.
 
 ## On-premise production: Linux VM + Nginx
 

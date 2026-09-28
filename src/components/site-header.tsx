@@ -2,30 +2,25 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
 
-const links = [
-  ["Faculty", "/faculty"], ["Departments", "/departments"], ["Programs", "/programs"],
-  ["Research", "/research"], ["News", "/news"], ["Events", "/events"],
-  ["Gallery", "/gallery"], ["Documents", "/documents"], ["Contact", "/contact"],
-] as const;
+const links = [["Home", "/"], ["About Us", "/about"], ["Programs", "/programs"], ["Research", "/research"], ["News", "/news"], ["Events", "/events"], ["Departments", "/departments"]] as const;
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  return (
-    <header className="site-header">
-      <div className="nav-shell">
-        <Link href="/" className="brand" aria-label="Faculty of Science homepage" onClick={() => setOpen(false)}>
-          <span className="brand-seal"><Image src="/uy1-seal.png" alt="University of Yaoundé I seal" width={46} height={46} priority /></span>
-          <span className="brand-copy"><strong>FACULTY OF SCIENCE</strong><small>UNIVERSITY OF YAOUNDÉ I</small></span>
-        </Link>
-        <button className="mobile-menu" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={22} /> : <Menu size={22} />}</button>
-        <nav className={`primary-nav ${open ? "is-open" : ""}`} aria-label="Main navigation">
-          {links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>)}
-          <Link href="/timetables" className="nav-cta" onClick={() => setOpen(false)}>Student timetables <ArrowUpRight size={15} /></Link>
-        </nav>
-      </div>
-    </header>
-  );
+  return <header className="site-header"><div className="nav-shell">
+    <Link href="/" className="brand" aria-label="Faculty of Science homepage" onClick={() => setOpen(false)}>
+      <span className="brand-seal"><Image src="/uy1-seal.png" alt="University of Yaoundé I seal" width={46} height={46} priority /></span>
+      <span className="brand-copy"><strong>FACULTY OF SCIENCE</strong><small>UNIVERSITY OF YAOUNDÉ I</small></span>
+    </Link>
+    <button className="mobile-menu" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={22} /> : <Menu size={22} />}</button>
+    <nav className={`primary-nav ${open ? "is-open" : ""}`} aria-label="Main navigation">
+      {links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>)}
+      <details className="nav-more"><summary>Explore <ChevronDown size={13}/></summary><div className="nav-dropdown">
+        <Link href="/gallery" onClick={() => setOpen(false)}>Gallery</Link><Link href="/documents" onClick={() => setOpen(false)}>Documentation</Link><Link href="/timetables" onClick={() => setOpen(false)}>Timetables</Link><Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
+      </div></details>
+      <Link href="/timetables" className="nav-cta" onClick={() => setOpen(false)}>Timetables <ArrowUpRight size={15} /></Link>
+    </nav>
+  </div></header>;
 }
