@@ -17,14 +17,14 @@ export default async function DepartmentPage({ params }: { params: Promise<{ slu
   if (!department) notFound();
   const emptyResult={data:[] as any[]};
   const results:any[]=department.id&&client ? await Promise.all([
-    client!.from("specializations").select("id,name,slug,description,image_path").eq("department_id", department.id).eq("is_active", true).order("sort_order"),
-    client!.from("programs").select("id,name,slug,degree,description,specialization_id,image_path").eq("department_id", department.id).eq("is_active", true).order("name"),
-    client!.from("research_projects").select("id,title,slug,summary,status,image_path").eq("department_id", department.id).eq("status", "published").order("created_at", {ascending:false}).limit(4),
-    client!.from("news").select("id,title,slug,excerpt,image_path").eq("department_id", department.id).eq("status", "published").order("published_at", {ascending:false}).limit(3),
-    client!.from("events").select("id,title,slug,description,starts_at,image_path").eq("department_id", department.id).eq("status", "published").order("starts_at").limit(3),
-    client!.from("gallery_items").select("id,title,slug,description,image_path").eq("department_id", department.id).eq("status", "published").limit(3),
-    client!.from("documents").select("id,title,slug,description,storage_path").eq("department_id", department.id).eq("status", "published").limit(3),
-    client!.from("timetables").select("id,level,semester,academic_year,specialization_id").eq("department_id", department.id).eq("status", "published").order("academic_year", {ascending:false}).limit(4),
+    client!.from("specializations").select("*").eq("department_id", department.id).eq("is_active", true).order("sort_order"),
+    client!.from("programs").select("*").eq("department_id", department.id).eq("is_active", true).order("name"),
+    client!.from("research_projects").select("*").eq("department_id", department.id).eq("status", "published").order("created_at", {ascending:false}).limit(4),
+    client!.from("news").select("*").eq("department_id", department.id).eq("status", "published").order("published_at", {ascending:false}).limit(3),
+    client!.from("events").select("*").eq("department_id", department.id).eq("status", "published").order("starts_at").limit(3),
+    client!.from("gallery_items").select("*").eq("department_id", department.id).eq("status", "published").limit(3),
+    client!.from("documents").select("*").eq("department_id", department.id).eq("status", "published").limit(3),
+    client!.from("timetables").select("*").eq("department_id", department.id).eq("status", "published").order("academic_year", {ascending:false}).limit(4),
   ]) : Array.from({length:8},()=>emptyResult);
   const [specialtiesResult,programsResult,researchResult,newsResult,eventsResult,galleryResult,docsResult,tablesResult]=results;
   const specialties = specialtiesResult.data ?? [];
