@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ArrowUpRight, Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
 
-const links = [["Home", "/"], ["About Us", "/about"], ["Programs", "/programs"], ["Research", "/research"], ["News", "/news"], ["Events", "/events"], ["Departments", "/departments"]] as const;
+const links = [["Home", "/"], ["About Us", "/about"], ["Programs", "/programs"], ["Research", "/research"], ["News & Events", "/news-events"], ["Departments", "/departments"]] as const;
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -18,7 +18,7 @@ export function SiteHeader() {
     <nav className={`primary-nav ${open ? "is-open" : ""}`} aria-label="Main navigation">
       {links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>)}
       <details className="nav-more"><summary>Explore <ChevronDown size={13}/></summary><div className="nav-dropdown">
-        <Link href="/gallery" onClick={() => setOpen(false)}>Gallery</Link><Link href="/documents" onClick={() => setOpen(false)}>Documentation</Link><Link href="/timetables" onClick={() => setOpen(false)}>Timetables</Link><Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
+        <Link href="/gallery" onClick={() => setOpen(false)}>Gallery</Link><Link href="/documents" onClick={() => setOpen(false)}>Documentation</Link><Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
       </div></details>
       <Link href="/timetables" className="nav-cta" onClick={() => setOpen(false)}>Timetables <ArrowUpRight size={15} /></Link>
     </nav>

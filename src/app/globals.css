@@ -120,3 +120,14 @@
 .related-image-link img{display:block;width:100%;max-height:110px;object-fit:cover;margin-top:6px}
 @media(max-width:850px){.timetable-form{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.timetable-form{grid-template-columns:1fr}}
+
+/* Department and specialty content pages */
+.department-resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:30px 0}
+.department-resource-grid .resource-card,.nested-section .resource-card{display:flex;flex-direction:column;align-items:stretch}
+.department-resource-grid .resource-card>img,.resource-card-image{display:block;width:100%;height:190px;object-fit:cover;border-radius:3px;margin:0 0 16px}
+.department-cover{display:block;width:100%;max-height:245px;object-fit:cover;border-radius:3px;margin-bottom:18px}
+.related-image{display:block;width:100%;max-height:130px;object-fit:cover;border-radius:2px;margin:8px 0}
+.related-columns .related-card{min-width:0}
+#specialties{scroll-margin-top:110px}
+@media(max-width:900px){.department-resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.department-resource-grid{grid-template-columns:1fr}}

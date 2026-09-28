@@ -14,7 +14,7 @@ Requirements: Node.js 20.9+ and npm.
 
 1. `npm install`
 2. Set `NEXT_PUBLIC_SUPABASE_URL` (the project API URL, `https://<project-ref>.supabase.co`), `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `NEXT_PUBLIC_SITE_URL` in `.env.local`.
-3. Apply `supabase/migrations/202609280001_initial_schema.sql`, `supabase/migrations/202609280002_admin_usernames.sql`, and `supabase/migrations/202609280003_faculty_content_architecture.sql` to a dedicated Supabase project.
+3. Apply `supabase/migrations/202609280001_initial_schema.sql`, `supabase/migrations/202609280002_admin_usernames.sql`, and `supabase/migrations/202609280003_faculty_content_architecture.sql` to a dedicated Supabase project. Apply later migrations in numeric order as well (currently through `202609280004_department_media_fields.sql`).
 4. Set `SUPABASE_SERVICE_ROLE_KEY` in the server environment for admin name lookup; never expose it to browser code or use a `NEXT_PUBLIC_` prefix.
 5. Run `npm run dev` and open `http://localhost:3000`.
 
