@@ -60,11 +60,15 @@ export function AdminWorkspace({displayName}:{displayName:string}) {
  const loadRows=useCallback(async()=>{
    if(!client){setLoading(false);setNotice("Supabase is not configured.");return;}
    setLoading(true);setNotice("");
-   const select=module.key==="timetables"?"*,timetable_source_versions(count)":"*";
-   const {data,error}=await client.from(module.table as any).select(select).order(["faculty_information","site_settings"].includes(module.table)?"updated_at":"created_at",{ascending:false}).limit(300);
-   if(error){setRows([]);setNotice(`Cannot load ${module.label.toLowerCase()}. Apply the latest Supabase migration and check admin access. ${error.message}`);}
-   else setRows(data??[]);
-   setLoading(false);
+   try {
+     const select=module.key==="timetables"?"*,timetable_source_versions(count)":"*";
+     const {data,error}=await client.from(module.table as any).select(select).order(["faculty_information","site_settings"].includes(module.table)?"updated_at":"created_at",{ascending:false}).limit(300);
+     if(error){setRows([]);setNotice(`Cannot load ${module.label.toLowerCase()}. Apply the latest Supabase migration and check admin access. ${error.message}`);}
+     else setRows(data??[]);
+   } catch(error) {
+     setRows([]);
+     setNotice(`Cannot load ${module.label.toLowerCase()}. Check your connection and administrator access. ${error instanceof Error?error.message:"Unknown error"}`);
+   } finally { setLoading(false); }
  },[client,module]);
  const loadOverview=useCallback(async()=>{
    if(!client)return;
