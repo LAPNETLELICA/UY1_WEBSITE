@@ -2,21 +2,23 @@ import Link from "next/link";
 import { ArrowUpRight, Image as ImageIcon } from "lucide-react";
 import { createPublicClient } from "@/lib/supabase/public";
 
-type Scope = "faculty" | "department" | "specialty";
+type Scope = "faculty" | "department" | "specialty" | "program" | "service";
 type Block = { id:string; title:string; section_key:string; block_type:string; content:Record<string,unknown>; image_path:string|null; link_label:string|null; link_url:string|null; sort_order:number };
 
-export async function PublicPageBlocks({scope,pageKey,departmentId,specialtyId}:{scope:Scope;pageKey:string;departmentId?:string;specialtyId?:string}) {
+export async function PublicPageBlocks({scope,pageKey,departmentId,specialtyId,programId,serviceId}:{scope:Scope;pageKey:string;departmentId?:string;specialtyId?:string;programId?:string;serviceId?:string}) {
   const client=createPublicClient();
-  if(!client||((scope==="department"||scope==="specialty")&&!departmentId)||(scope==="specialty"&&!specialtyId))return null;
+  if(!client||((scope==="department"||scope==="specialty")&&!departmentId)||(scope==="specialty"&&!specialtyId)||(scope==="program"&&!programId)||(scope==="service"&&!serviceId))return null;
   let query=client.from("page_content_blocks").select("*").eq("scope",scope).eq("page_key",pageKey).eq("is_enabled",true).order("sort_order");
   if(departmentId)query=query.eq("department_id",departmentId);
   if(specialtyId)query=query.eq("specialization_id",specialtyId);
+  if(programId)query=query.eq("program_id",programId);
+  if(serviceId)query=query.eq("service_id",serviceId);
   const {data}=await query;
   const blocks=(data??[]) as Block[];
   const includeContacts=scope!=="faculty"||pageKey==="contact";
   const [contactsResult,linksResult]=includeContacts?await Promise.all([
-    client.from("site_contacts").select("id,label,contact_type,value").eq("scope",scope).eq("is_enabled",true).order("sort_order").match({...(departmentId?{department_id:departmentId}:{}),...(specialtyId?{specialization_id:specialtyId}:{})}),
-    client.from("site_links").select("id,label,url,category").eq("scope",scope).eq("is_enabled",true).order("sort_order").match({...(departmentId?{department_id:departmentId}:{}),...(specialtyId?{specialization_id:specialtyId}:{})})
+    client.from("site_contacts").select("id,label,contact_type,value").eq("scope",scope).eq("is_enabled",true).order("sort_order").match({...(departmentId?{department_id:departmentId}:{}),...(specialtyId?{specialization_id:specialtyId}:{}),...(programId?{program_id:programId}:{}),...(serviceId?{service_id:serviceId}:{})}),
+    client.from("site_links").select("id,label,url,category").eq("scope",scope).eq("is_enabled",true).order("sort_order").match({...(departmentId?{department_id:departmentId}:{}),...(specialtyId?{specialization_id:specialtyId}:{}),...(programId?{program_id:programId}:{}),...(serviceId?{service_id:serviceId}:{})})
   ]):[{data:[]},{data:[]}];
   const contacts=contactsResult.data??[];const links=linksResult.data??[];
   if(!blocks.length&&!contacts.length&&!links.length)return null;

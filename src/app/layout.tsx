@@ -24,7 +24,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
-        <div className="announcement"><span className="announcement-dot" /> Official website of the Faculty of Science <span className="announcement-separator">·</span> University of Yaoundé I</div>
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />

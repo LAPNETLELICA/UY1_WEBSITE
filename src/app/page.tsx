@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight, Microscope, BookOpen, FlaskConical } from "lu
 import { getActiveDepartments, getPublicRows } from "@/lib/content";
 import type { ContentRow } from "@/lib/content";
 import { PublicPageBlocks } from "@/components/public-page-blocks";
+import { createPublicClient } from "@/lib/supabase/public";
 
 const departments = [
   ["01", "Biological Sciences", "From molecular biology to ecosystem stewardship, exploring life at every scale."],
@@ -20,10 +21,13 @@ const updates = [
 
 export const dynamic = "force-dynamic";
 export default async function HomePage() {
-  const [activeDepartments, livePrograms, liveResearch, liveNews, liveEvents, liveGallery, liveDocuments] = await Promise.all([
+  const supabase = createPublicClient();
+  const servicesRequest = supabase ? supabase.from("faculty_services").select("id,name,title,responsible_name,description,image_path,slug").eq("status", "published").order("sort_order").limit(3) : Promise.resolve({ data: [] as ContentRow[] });
+  const [activeDepartments, livePrograms, liveResearch, liveNews, liveEvents, liveGallery, liveDocuments, servicesResult] = await Promise.all([
     getActiveDepartments(), getPublicRows("programs"), getPublicRows("research_projects"), getPublicRows("news"),
-    getPublicRows("events"), getPublicRows("gallery_items"), getPublicRows("documents"),
+    getPublicRows("events"), getPublicRows("gallery_items"), getPublicRows("documents"), servicesRequest,
   ]);
+  const liveServices = servicesResult.data ?? [];
   const departmentItems = activeDepartments.map((d: ContentRow, i) => [String(i + 1).padStart(2, "0"), d.name, d.description || "Explore teaching, research and academic life in this department.", d.slug] as const);
   const newsItems = liveNews.length ? liveNews.slice(0,3).map((x:ContentRow)=>[x.category||"FACULTY",x.title,x.published_at?new Date(x.published_at).toLocaleDateString("en",{dateStyle:"medium"}):"Latest faculty update",x.slug] as const) : updates.map(([tag,title,date])=>[tag,title,date,""] as const);
   return <>
@@ -36,6 +40,8 @@ export default async function HomePage() {
       </div>
       <div className="hero-index"><strong>01</strong><span>/</span> A LEGACY OF LEARNING</div>
     </section>
+
+    <section className="section faculty-services-home"><div className="wrap"><div className="section-head-row"><div><p className="section-kicker">Leadership · Administration · Student support</p><h2 className="section-heading">Faculty services and administration.</h2><p className="section-lead">Meet the offices and people who support the academic and administrative life of the Faculty.</p></div><Link className="text-link" href="/services">View Faculty Services <ArrowRight size={14}/></Link></div>{liveServices.length?<div className="resource-grid">{liveServices.map((service:ContentRow)=><article className="resource-card faculty-service-home-card" key={service.id}>{service.image_path&&<img src={service.image_path} alt={service.responsible_name||service.name}/>}<p className="section-kicker">{service.title||"Faculty service"}</p><h3>{service.name}</h3>{service.responsible_name&&<p><strong>{service.responsible_name}</strong></p>}<p>{service.description}</p></article>)}</div>:<p className="section-lead">Faculty leadership, academic administration and student support services will appear here when published.</p>}</div></section>
 
     <section className="section"><div className="wrap intro-grid">
       <div className="intro-copy"><p className="section-kicker">A place for possibility</p><h2 className="section-heading">Science with purpose.<br />Learning for life.</h2><p>Rooted in the University of Yaoundé I, our faculty brings together dedicated educators, emerging researchers and curious minds. We connect rigorous teaching with the questions that matter to our communities.</p><Link className="text-link" href="/about">Meet the Faculty <ArrowRight size={15} /></Link></div>
