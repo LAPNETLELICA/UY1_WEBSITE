@@ -60,6 +60,20 @@ create table if not exists public.timetable_source_versions (
   unique (timetable_id, version_number)
 );
 
+-- Preserve the currently attached source document as version 1 before future
+-- uploads replace the timetable's current file reference.
+insert into public.timetable_source_versions (
+  timetable_id, version_number, storage_path, file_name, mime_type, file_size_bytes
+)
+select
+  t.id, t.version_number,
+  coalesce(t.source_pdf_path, t.storage_path, t.file_url),
+  coalesce(nullif(t.source_file_name, ''), regexp_replace(split_part(coalesce(t.source_pdf_path, t.storage_path, t.file_url), '?', 1), '^.*/', '')),
+  coalesce(t.mime_type, 'application/pdf'), 0
+from public.timetables t
+where coalesce(t.source_pdf_path, t.storage_path, t.file_url) is not null
+on conflict (timetable_id, version_number) do nothing;
+
 alter table public.timetable_entries add column if not exists department_id uuid references public.departments(id) on delete set null;
 alter table public.timetable_entries add column if not exists specialization_id uuid references public.specializations(id) on delete set null;
 alter table public.timetable_entries add column if not exists level text not null default '';
