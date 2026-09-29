@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 export function BackButton({ fallbackPath = "/", className = "" }: { fallbackPath?: string; className?: string }) {
@@ -21,4 +21,10 @@ export function BackButton({ fallbackPath = "/", className = "" }: { fallbackPat
       <span>Back</span>
     </button>
   );
+}
+
+export function PageBackControl() {
+  const pathname = usePathname();
+  if (pathname === "/" || pathname === "/admin" || pathname.startsWith("/admin/")) return null;
+  return <div className="page-back-strip"><div className="wrap"><BackButton /></div></div>;
 }

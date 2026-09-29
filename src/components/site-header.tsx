@@ -5,7 +5,6 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { BackButton } from "@/components/back-button";
 
 const links = [["Home", "/"], ["About Us", "/about"], ["Programs", "/programs"], ["Research", "/research"], ["News & Events", "/news-events"], ["Departments", "/departments"]] as const;
 
@@ -14,7 +13,6 @@ export function SiteHeader() {
   const pathname = usePathname();
   if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
   return <><div className="announcement"><span className="announcement-dot" /> Official website of the Faculty of Science <span className="announcement-separator">·</span> University of Yaoundé I</div><header className="site-header"><div className="nav-shell">
-    <BackButton className="site-history-back" />
     <Link href="/" className="brand" aria-label="Faculty of Science homepage" onClick={() => setOpen(false)}>
       <span className="brand-seal"><Image src="/uy1-seal.png" alt="University of Yaoundé I seal" width={46} height={46} priority /></span>
       <span className="brand-copy"><strong>FACULTY OF SCIENCE</strong><small>UNIVERSITY OF YAOUNDÉ I</small></span>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { PageBackControl } from "@/components/back-button";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sciences.univ-yaounde1.cm";
 
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body>
         <SiteHeader />
-        <main>{children}</main>
+        <main><PageBackControl />{children}</main>
         <SiteFooter />
       </body>
     </html>
