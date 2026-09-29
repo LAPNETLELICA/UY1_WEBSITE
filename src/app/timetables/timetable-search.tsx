@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Printer, Search } from "lucide-react";
+import { Download, Printer, Search } from "lucide-react";
 
 type Department = { id: string; name: string };
 type Specialty = { id: string; name: string; department_id: string };
@@ -24,6 +24,55 @@ export function TimetableSearch({initialDepartment="",initialSpecialty=""}:{init
   const [timetableId, setTimetableId] = useState("");
   const [notice, setNotice] = useState("Choose your department and study details to look up a published timetable.");
   const selected = timetables.find((item) => item.id === timetableId);
+  const downloadTimetable = () => {
+    if (!selected) {
+      setNotice("Please select a published timetable first.");
+      return;
+    }
+    const file = selected.file_url || selected.storage_path;
+    if (file) {
+      const href = /^https?:\/\//i.test(file)
+        ? file
+        : client?.storage.from("faculty-public").getPublicUrl(file, { download: true }).data.publicUrl;
+      if (href) {
+        const anchor = document.createElement("a");
+        anchor.href = href;
+        anchor.download = `${selected.academic_year}-${selected.level}-${selected.semester}-timetable`;
+        anchor.target = "_blank";
+        anchor.rel = "noreferrer";
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        return;
+      }
+    }
+    if (!entries.length) {
+      setNotice("There is no timetable file or class data available to download yet.");
+      return;
+    }
+    const escapeCell = (value: string | number) => `"${String(value).replace(/"/g, '""')}"`;
+    const departmentName = departments.find((item) => item.id === selected.department_id)?.name ?? "Department";
+    const specialtyName = specialties.find((item) => item.id === selected.specialization_id)?.name ?? "";
+    const rows = [
+      ["Department", departmentName],
+      ["Specialty", specialtyName],
+      ["Level", selected.level],
+      ["Semester", selected.semester],
+      ["Academic year", selected.academic_year],
+      [],
+      ["Day", "Start time", "End time", "Course", "Teacher", "Room"],
+      ...entries.map((entry) => [days[entry.day_of_week - 1] ?? "", entry.start_time, entry.end_time, entry.course_name, entry.teacher ?? "", entry.room ?? ""]),
+    ];
+    const csv = rows.map((row) => row.map(escapeCell).join(",")).join("\r\n");
+    const url = URL.createObjectURL(new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${selected.academic_year}-${selected.level}-${selected.semester}-timetable.csv`.replace(/ /g, "-");
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+  };
   const academicYears = useMemo(() => {
     const now=new Date();const currentStart=now.getMonth()>=8?now.getFullYear():now.getFullYear()-1;
     const generated=Array.from({length:12},(_,index)=>`${currentStart-index}-${currentStart-index+1}`);
@@ -80,6 +129,6 @@ export function TimetableSearch({initialDepartment="",initialSpecialty=""}:{init
       <label>Academic year<select disabled={!department} value={academicYear} onChange={(e)=>setAcademicYear(e.target.value)}><option value="">Select year</option>{academicYears.map((value)=><option key={value}>{value}</option>)}</select></label>
       <button className="button" style={{background:"var(--purple)",color:"white",border:0}} onClick={() => selected ? window.print() : setNotice("Please select a published timetable first.")}><Search size={15}/> Find timetable</button>
     </div>
-    {entries.length > 0 ? <div className="timetable-results"><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}><div><p className="section-kicker">{selected?.academic_year} · {selected?.semester}</p><h2 className="section-heading" style={{fontSize:30}}>{departments.find((d)=>d.id===department)?.name}{specialty?` · ${specialties.find(s=>s.id===specialty)?.name??""}`:""} · {selected?.level}</h2></div><button className="text-link" onClick={()=>window.print()}><Printer size={15}/> Print timetable</button></div>{(selected?.file_url||selected?.storage_path)&&<p><a className="button button-primary" href={selected.file_url||selected.storage_path||""} target="_blank" rel="noreferrer" download>Download the timetable</a></p>}<div className="simple-list">{days.map((day,index)=>{const dayEntries=entries.filter((entry)=>entry.day_of_week===index+1);return dayEntries.length>0?<article key={day}><h3>{day}</h3>{dayEntries.map((entry)=><p key={entry.id}><strong>{entry.start_time.slice(0,5)}–{entry.end_time.slice(0,5)} · {entry.course_name}</strong><br/>{entry.room ? `Room: ${entry.room}` : "Room to be confirmed"}{entry.teacher ? ` · ${entry.teacher}` : ""}</p>)}</article>:null})}</div></div> : <div className="timetable-placeholder">{notice}{selected?.file_url||selected?.storage_path?<p><a className="text-link" href={selected.file_url||selected.storage_path||""} target="_blank" rel="noreferrer" download>Download the timetable</a></p>:null}</div>}
+    {entries.length > 0 ? <div className="timetable-results"><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}><div><p className="section-kicker">{selected?.academic_year} · {selected?.semester}</p><h2 className="section-heading" style={{fontSize:30}}>{departments.find((d)=>d.id===department)?.name}{specialty?` · ${specialties.find(s=>s.id===specialty)?.name??""}`:""} · {selected?.level}</h2></div><div className="button-row"><button className="button button-primary" onClick={downloadTimetable}><Download size={15}/> Download timetable</button><button className="text-link" onClick={()=>window.print()}><Printer size={15}/> Print timetable</button></div></div><div className="simple-list">{days.map((day,index)=>{const dayEntries=entries.filter((entry)=>entry.day_of_week===index+1);return dayEntries.length>0?<article key={day}><h3>{day}</h3>{dayEntries.map((entry)=><p key={entry.id}><strong>{entry.start_time.slice(0,5)}–{entry.end_time.slice(0,5)} · {entry.course_name}</strong><br/>{entry.room ? `Room: ${entry.room}` : "Room to be confirmed"}{entry.teacher ? ` · ${entry.teacher}` : ""}</p>)}</article>:null})}</div></div> : <div className="timetable-placeholder">{notice}{selected&&<p><button className="button button-primary" onClick={downloadTimetable}><Download size={15}/> Download timetable</button></p>}</div>}
   </>;
 }
