@@ -1,0 +1,13 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ArrowLeft, Images } from "lucide-react";
+import { createPublicClient } from "@/lib/supabase/public";
+
+export const dynamic = "force-dynamic";
+export default async function DepartmentGalleryAlbumPage({params}:{params:Promise<{slug:string;albumSlug:string}>}){
+  const {slug,albumSlug}=await params;const client=createPublicClient();if(!client)notFound();
+  const {data:department}=await client.from("departments").select("id,name,slug").eq("slug",slug).eq("is_active",true).maybeSingle();if(!department)notFound();
+  const {data:album}=await client.from("gallery_albums").select("*").eq("department_id",department.id).eq("slug",albumSlug).eq("status","published").maybeSingle();if(!album)notFound();
+  const {data:images}=await client.from("gallery_items").select("id,title,description,image_path,alt_text,captured_on").eq("album_id",album.id).eq("status","published").order("captured_on",{ascending:false});
+  return <><section className="page-hero"><div className="wrap"><p className="section-kicker"><Link href={`/departments/${department.slug}`}>{department.name}</Link> · <Link href={`/departments/${department.slug}/gallery`}>Gallery</Link> · {album.category}</p><h1>{album.title}</h1><p>{album.description||`Images and moments from ${department.name}.`}</p>{album.album_date&&<p className="resource-context">{new Date(album.album_date).toLocaleDateString("en",{dateStyle:"long"})}</p>}</div></section><section className="content-section"><div className="wrap">{album.cover_image_path&&<img className="department-album-cover" src={album.cover_image_path} alt={`${album.title} cover`}/>}<div className="section-head-row"><div><p className="section-kicker">{department.name} · {images?.length??0} images</p><h2 className="section-heading">Album photographs</h2></div></div>{images?.length?<div className="department-gallery-grid">{images.map((image)=><figure key={image.id}><img src={image.image_path} alt={image.alt_text||image.title}/><figcaption><strong>{image.title}</strong>{image.description&&<span>{image.description}</span>}{image.captured_on&&<time>{new Date(image.captured_on).toLocaleDateString("en",{dateStyle:"medium"})}</time>}</figcaption></figure>)}</div>:<div className="department-section-empty"><Images size={28}/><div><h2>Images will appear here</h2><p>Add and publish gallery images linked to this album in the admin dashboard.</p></div></div>}<Link className="text-link" href={`/departments/${department.slug}/gallery`}><ArrowLeft size={14}/> Back to {department.name} gallery</Link></div></section></>;
+}

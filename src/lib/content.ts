@@ -15,6 +15,7 @@ export async function getPublicRows(table: string, select = "*") {
   const relationSelect = table === "gallery_items" ? "*,department:departments(name,slug),specialty:specializations(name,slug),related_event:events(title,slug),related_research:research_projects(title,slug)" : "*,department:departments(name,slug),specialty:specializations(name,slug)";
   let query = client.from(table).select(select === "*" ? relationSelect : select).order("created_at", { ascending: false }).limit(30);
   if (table === "programs") query = query.eq("is_active", true);
+  else if (table === "research_projects") query = query.in("status", ["published", "completed"]);
   else query = query.eq("status", "published");
   const { data } = await query;
   return (data ?? []) as ContentRow[];
