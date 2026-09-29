@@ -1,6 +1,27 @@
 -- Add manageable Faculty services and department leadership profiles.
 -- Apply after migrations 001 through 007.
 
+-- Check the prerequisite CMS tables first so a skipped migration gets an
+-- actionable message instead of a generic missing-relation error.
+do $$
+declare
+  missing_tables text[];
+begin
+  select array_agg(required.table_name) into missing_tables
+  from (values
+    ('departments'),
+    ('programs'),
+    ('page_content_blocks'),
+    ('site_contacts'),
+    ('site_links')
+  ) as required(table_name)
+  where to_regclass('public.' || required.table_name) is null;
+
+  if missing_tables is not null then
+    raise exception 'Migration 008 requires the CMS schema first. Missing tables: %. Apply migrations 006 and 007 in order, then rerun migration 008.', array_to_string(missing_tables, ', ');
+  end if;
+end $$;
+
 alter table public.departments
   add column if not exists head_title text not null default '',
   add column if not exists head_bio text not null default '',

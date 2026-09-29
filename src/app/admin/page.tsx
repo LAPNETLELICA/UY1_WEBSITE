@@ -16,9 +16,9 @@ export default function AdminPage() {
     if(!client){setReady(true);return;}
     client.auth.getUser().then(async({data})=>{
       if(!data.user){router.replace("/admin/login");return;}
-      const {data:profile}=await client.from("admin_profiles").select("user_id,display_name").eq("user_id",data.user.id).maybeSingle();
+      const {data:profile}=await client.from("admin_profiles").select("user_id").eq("user_id",data.user.id).maybeSingle();
       if(!profile){await client.auth.signOut();router.replace("/admin/login");return;}
-      setDisplayName(profile.display_name||"Administrator");setReady(true);
+      setDisplayName("ADMIN-FS");setReady(true);
     });
   },[client,router]);
   async function signOut(){await client?.auth.signOut();router.replace("/admin/login");}

@@ -37,7 +37,7 @@ The site includes department and specialty pages, linked public content detail p
 
 ## Central site CMS setup
 
-Apply `supabase/migrations/202609280006_central_site_cms.sql` after migrations `001` through `005`, then apply `supabase/migrations/202609280007_department_academic_content.sql` and `supabase/migrations/202609280008_faculty_services_and_department_leads.sql` in the Supabase SQL Editor (or with the Supabase CLI). This adds scoped page sections, contacts, links, media records, gallery albums, academic years, downloadable timetable files, and document visibility. Existing rows are retained; the programs and timetables tables are made compatible with optional specialty/program links.
+Apply `supabase/migrations/202609280006_central_site_cms.sql` after migrations `001` through `005`, then apply `supabase/migrations/202609280007_department_academic_content.sql`, followed by `supabase/migrations/202609280008_faculty_services_and_department_leads.sql`, in that exact order in the Supabase SQL Editor (or with the Supabase CLI). This adds scoped page sections, contacts, links, media records, gallery albums, academic years, downloadable timetable files, and document visibility. Existing rows are retained; the programs and timetables tables are made compatible with optional specialty/program links.
 
 In `/admin/dashboard`, use **Faculty → Page sections** to add sections. Set the scope to Faculty, Department, or Specialty; use `home` for homepage sections, the exact department slug for a department page, the specialty slug for its page, or a public page slug such as `about`. Choose one of the named sections, provide the title and optional image/link, then enter section content as JSON. For example:
 
