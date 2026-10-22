@@ -4,25 +4,26 @@ import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
+  const apiError = (code: "auth.notConfigured" | "auth.invalidRequest" | "auth.invalidCredentials", status: number) => NextResponse.json({ error: code }, { status });
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !anonKey || !serviceRoleKey) {
-    return NextResponse.json({ error: "Admin username authentication is not configured." }, { status: 503 });
+    return apiError("auth.notConfigured", 503);
   }
 
   let body: { username?: unknown; password?: unknown };
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    return apiError("auth.invalidRequest", 400);
   }
   if (typeof body.username !== "string" || typeof body.password !== "string" || body.username.length > 64 || body.password.length > 256) {
-    return NextResponse.json({ error: "Invalid credentials." }, { status: 400 });
+    return apiError("auth.invalidCredentials", 400);
   }
   const username = body.username.trim().toLowerCase();
   if (!/^[a-z0-9._-]{3,64}$/.test(username) || body.password.length === 0) {
-    return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+    return apiError("auth.invalidCredentials", 401);
   }
 
   // This lookup uses the service-role key on the server only. The username mapping
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
     .eq("username", username)
     .maybeSingle();
   if (lookupError || !identity?.email) {
-    return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+    return apiError("auth.invalidCredentials", 401);
   }
 
   const cookieStore = await cookies();
@@ -53,7 +54,7 @@ export async function POST(request: Request) {
     password: body.password,
   });
   if (authError || !auth.user) {
-    return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+    return apiError("auth.invalidCredentials", 401);
   }
 
   const { data: profile, error: profileError } = await admin
@@ -63,7 +64,7 @@ export async function POST(request: Request) {
     .maybeSingle();
   if (profileError || !profile) {
     await supabase.auth.signOut();
-    return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+    return apiError("auth.invalidCredentials", 401);
   }
 
   return NextResponse.json({ ok: true });

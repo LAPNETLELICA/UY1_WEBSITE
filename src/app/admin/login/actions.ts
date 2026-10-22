@@ -4,16 +4,19 @@ import { redirect } from "next/navigation";
 import { createAdminLookupClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-export type LoginState = { error: string } | null;
-const genericError = "Sign-in failed. Check your name and password or contact the faculty administrator.";
+export type LoginState = { error: "auth.signInFailed" } | null;
+const genericError = "auth.signInFailed" as const;
 
 export async function login(_previousState: LoginState, formData: FormData): Promise<LoginState> {
   const nameValue = formData.get("name");
   const passwordValue = formData.get("password");
+  const departmentValue = formData.get("department");
   const name = typeof nameValue === "string" ? nameValue.trim().toLowerCase() : "";
   const password = typeof passwordValue === "string" ? passwordValue : "";
+  const expectedDepartmentSlug = typeof departmentValue === "string" ? departmentValue.trim().toLowerCase() : "";
 
-  if (!/^[a-z0-9._-]{3,64}$/.test(name) || password.length === 0 || password.length > 256) {
+  const emailLogin = /^\S+@\S+\.\S+$/.test(name);
+  if ((!emailLogin && !/^[a-z0-9._-]{3,64}$/.test(name)) || password.length === 0 || password.length > 256) {
     console.error("STEP A FAILED: Invalid username or missing credentials.");
     return { error: genericError };
   }
@@ -26,15 +29,19 @@ export async function login(_previousState: LoginState, formData: FormData): Pro
 
   let identity: { email: string; user_id: string } | null = null;
   try {
-    const result = await lookupClient
-      .from("admin_login_identities")
-      .select("email,user_id")
-      .eq("username", name)
-      .maybeSingle();
-    identity = result.data;
-    if (result.error) {
-      console.error("STEP A FAILED: Username lookup in admin_login_identities failed.", result.error);
+    const profileResult = emailLogin
+      ? await lookupClient.from("admin_profiles").select("email,user_id").eq("email", name).maybeSingle()
+      : await lookupClient.from("admin_profiles").select("email,user_id").eq("username", name).maybeSingle();
+    if (profileResult.error) {
+      console.error("STEP A FAILED: Administrator profile lookup failed.", profileResult.error);
       return { error: genericError };
+    }
+    identity = profileResult.data;
+    // Older super-administrator accounts can still use the legacy identity map.
+    if (!identity && !emailLogin) {
+      const legacyResult = await lookupClient.from("admin_login_identities").select("email,user_id").eq("username", name).maybeSingle();
+      if (legacyResult.error) return { error: genericError };
+      identity = legacyResult.data;
     }
   } catch (error) {
     console.error("STEP A FAILED: Username lookup in admin_login_identities threw an exception.", error);
@@ -48,7 +55,7 @@ export async function login(_previousState: LoginState, formData: FormData): Pro
 
   const { data: profile, error: profileError } = await lookupClient
     .from("admin_profiles")
-    .select("user_id")
+    .select("user_id,role,is_active,department:departments(slug,is_active)")
     .eq("user_id", identity.user_id)
     .maybeSingle();
   if (profileError || !profile) {
@@ -80,6 +87,18 @@ export async function login(_previousState: LoginState, formData: FormData): Pro
   }
 
   if (!authUserId) return { error: genericError };
+
+  const assignedDepartment = Array.isArray(profile.department) ? profile.department[0] : profile.department;
+  if (expectedDepartmentSlug && (
+    !/^[a-z0-9-]+$/.test(expectedDepartmentSlug) ||
+    profile.role !== "department_admin" ||
+    !profile.is_active ||
+    assignedDepartment?.slug !== expectedDepartmentSlug ||
+    !assignedDepartment.is_active
+  )) {
+    await supabase.auth.signOut();
+    return { error: genericError };
+  }
 
   redirect("/admin/dashboard");
 }
