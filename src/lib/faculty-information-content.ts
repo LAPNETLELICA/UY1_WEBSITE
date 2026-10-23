@@ -9,3 +9,10 @@ export function withFacultyInformationText(content: unknown, text: string): Reco
   const previous = content && typeof content === "object" && !Array.isArray(content) ? content as Record<string, unknown> : {};
   return { ...previous, text };
 }
+
+export function getAboutBannerImage(rows: {key: string; content: unknown}[], fallback: string): string {
+  const content = rows.find(row => row.key === "about_banner")?.content;
+  if (!content || typeof content !== "object") return fallback;
+  const image = (content as Record<string, unknown>).image_path;
+  return typeof image === "string" && (image.startsWith("https://") || image.startsWith("/")) ? image : fallback;
+}
