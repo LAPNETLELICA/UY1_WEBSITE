@@ -16,3 +16,8 @@ export function getAboutBannerImage(rows: {key: string; content: unknown}[], fal
   const image = (content as Record<string, unknown>).image_path;
   return typeof image === "string" && (image.startsWith("https://") || image.startsWith("/")) ? image : fallback;
 }
+
+export function getAboutText(rows: {key: string; content: unknown}[], key: string, fallback: string): string {
+  const row = rows.find(item => item.key === key);
+  return row ? readFacultyInformationText(row.content) || fallback : fallback;
+}
