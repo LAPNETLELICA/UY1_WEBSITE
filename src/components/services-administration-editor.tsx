@@ -86,7 +86,11 @@ export function ServicesAdministrationEditor({ departments, onEditDepartment }: 
     if (validation) { setMessage(validation); setError(true); return; }
     setBusy(true); setMessage("");
     const path = `faculty-information/services-${crypto.randomUUID()}-${file.name.toLowerCase().replace(/[^a-z0-9._-]/g, "-")}`;
-    const { error: uploadError } = await client.storage.from("faculty-public").upload(path, file, { contentType: file.type });
+    let uploadError: { message: string } | null;
+    try {
+      const result = await client.storage.from("faculty-public").upload(path, file, { contentType: file.type });
+      uploadError = result.error;
+    } catch (cause) { uploadError = { message: cause instanceof Error ? cause.message : String(cause) }; }
     if (uploadError) { setMessage(`Unable to upload the image: ${uploadError.message}`); setError(true); setBusy(false); return; }
     const url = client.storage.from("faculty-public").getPublicUrl(path).data.publicUrl;
     if (leaderIndex === undefined) change({ bannerImage: url });
