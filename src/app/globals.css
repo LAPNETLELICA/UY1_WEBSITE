@@ -355,3 +355,14 @@ body{font-size:17px;line-height:1.75}
 .admin-workspace.is-sidebar-collapsed .admin-side-label svg:first-child{width:18px;height:18px}
 @media(max-width:850px){.admin-side-label{flex-shrink:0}.admin-workspace.is-sidebar-collapsed .admin-side-label{display:flex!important}}
 .department-admin-dashboard .admin-sidebar>button[title="Departments"],.department-admin-dashboard .admin-dashboard-shortcuts .admin-shortcut-grid>:first-child{display:none}
+.faculty-publishing .admin-publishing-list { display: grid; gap: 12px; margin-top: 24px; }
+.faculty-publishing .admin-record { align-items: center; }
+.faculty-publishing .publishing-wide { grid-column: 1 / -1; }
+.faculty-publishing .publishing-images { display: grid; gap: 12px; padding: 18px; border: 1px solid #ded9e5; }
+.faculty-publishing .publishing-images label { display: grid; gap: 8px; }
+.faculty-publishing .publishing-gallery { display: flex; flex-wrap: wrap; gap: 10px; }
+.faculty-publishing .publishing-thumbnail { display: inline-grid; gap: 6px; justify-items: start; }
+.faculty-publishing .publishing-thumbnail img { width: 120px; height: 88px; object-fit: cover; border-radius: 5px; }
+.faculty-publishing .publishing-thumbnail button { border: 0; background: transparent; color: #633579; cursor: pointer; }
+.publishing-home-image { width: 72px; height: 60px; object-fit: cover; border-radius: 4px; }
+.publishing-event-image { display: block; width: 100%; max-height: 220px; object-fit: cover; margin-bottom: 16px; }
