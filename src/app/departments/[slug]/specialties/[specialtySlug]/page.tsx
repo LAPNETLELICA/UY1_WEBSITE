@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, BookOpen, CalendarDays, Clock3, FileText, FlaskConical, Images, Newspaper, type LucideIcon } from "lucide-react";
 import { createPublicClient } from "@/lib/supabase/public";
 import { PublicPageBlocks } from "@/components/public-page-blocks";
+import { CmsTranslationMap } from "@/components/cms-translation-map";
 
 export const dynamic = "force-dynamic";
 export default async function SpecialtyPage({params}:{params:Promise<{slug:string;specialtySlug:string}>}) {
@@ -17,7 +18,7 @@ export default async function SpecialtyPage({params}:{params:Promise<{slug:strin
     client.from("news").select("*").eq("specialization_id",specialty.id).eq("status","published"),
     client.from("events").select("*").eq("specialization_id",specialty.id).eq("status","published"),
     client.from("gallery_items").select("*").eq("specialization_id",specialty.id).eq("status","published"),
-    client.from("documents").select("id,title,description,storage_path").eq("specialization_id",specialty.id).eq("status","published"),
+    client.from("documents").select("id,title,description,storage_path,translations").eq("specialization_id",specialty.id).eq("status","published"),
     client.from("timetables").select("id,level,semester,academic_year").eq("specialization_id",specialty.id).eq("status","published"),
   ]);
   const updates=[...(news.data??[]).map((x:any)=>({...x,_kind:"news"})),...(events.data??[]).map((x:any)=>({...x,_kind:"events"}))];
@@ -29,7 +30,7 @@ export default async function SpecialtyPage({params}:{params:Promise<{slug:strin
     {id:"documentation",title:"Documentation",items:docs.data??[],href:`/departments/${department.slug}/documents?specialty=${specialty.id}`,Icon:FileText,label:(x)=>x.title,detail:(x)=>x.description||"Documents and learning resources for this specialty.",link:(x)=>`/departments/${department.slug}/documents/${x.id}`},
     {id:"timetables",title:"Timetables",items:tables.data??[],href:`/departments/${department.slug}/timetables?specialty=${specialty.id}`,Icon:Clock3,label:(x)=>`${x.level} · ${x.semester}`,detail:(x)=>`Academic year ${x.academic_year}`,link:()=>`/departments/${department.slug}/timetables?specialty=${specialty.id}`,media:()=>undefined},
   ];
-  return <>
+  return <><CmsTranslationMap rows={[department,specialty,...(programs.data??[]),...(research.data??[]),...(news.data??[]),...(events.data??[]),...(gallery.data??[]),...(docs.data??[])] as any}/>
     <section className="page-hero specialty-hero"><div className="wrap">
       <p className="section-kicker"><Link href={`/departments/${department.slug}`}>{department.name}</Link> <span aria-hidden="true">/</span> Specialty</p>
       <h1>{specialty.name}</h1><p>{specialty.description||"Explore this specialty’s programmes, research, news, events and learning resources."}</p>

@@ -115,8 +115,46 @@ Object.assign(french, {
   "Faculty of Science homepage": "Accueil de la Faculté des Sciences",
 });
 
+Object.assign(french, {
+  "Department profiles will appear here as they are published in the faculty content system.": "Les profils des départements apparaîtront ici dès leur publication dans le système de contenu de la Faculté.",
+  "Choose a specialty, level, semester and academic year to view or download the matching timetable.": "Choisissez une spécialité, un niveau, un semestre et une année académique pour consulter ou télécharger l’emploi du temps correspondant.",
+  "Explore the fields of study, learning objectives and career pathways offered by this department.": "Explorez les domaines d’études, les objectifs pédagogiques et les débouchés proposés par ce département.",
+  "Find your specialty.": "Trouvez votre spécialité.",
+  "Build a pathway in": "Construisez votre parcours en",
+  "Each specialty profile includes objectives, teaching areas, research and career information.": "Chaque profil de spécialité présente ses objectifs, ses domaines d’enseignement, ses recherches et ses débouchés.",
+  "Browse department programmes and research or open a specialty for content linked specifically to that field.": "Parcourez les programmes et les recherches du département, ou ouvrez une spécialité pour consulter son contenu dédié.",
+  "This department section is ready for its content to be published.": "Cette section du département est prête à recevoir son contenu.",
+  "Names, roles, portraits and professional biographies are maintained in the administration dashboard.": "Les noms, fonctions, portraits et biographies professionnelles sont gérés dans le tableau de bord d’administration.",
+  "Select Semester": "Sélectionner un semestre",
+  "Open access for all students": "Accessible à tous les étudiants",
+  "Downloadable PDF documents": "Documents PDF téléchargeables",
+  "Official academic schedules": "Calendriers académiques officiels",
+  "Learn about administration": "Découvrir l’administration",
+  "Timetable": "Emploi du temps",
+  "Images will appear here": "Les images apparaîtront ici",
+  "Add and publish gallery images linked to this album in the admin dashboard.": "Ajoutez et publiez dans le tableau de bord les images associées à cet album.",
+  "Album photographs": "Photos de l’album",
+  "Specialty profiles are ready to be added": "Les profils de spécialité peuvent être ajoutés",
+  "A dedicated learning and research pathway within this department.": "Un parcours d’études et de recherche dédié au sein de ce département.",
+  "Image area · ready for content": "Zone d’image · en attente de contenu",
+  "Consult / download": "Consulter / télécharger",
+  "View document": "Voir le document",
+  "Read more": "Lire la suite",
+  "Open album": "Ouvrir l’album",
+  "Research axes": "Axes de recherche",
+  "Questions shaping our work": "Les questions qui orientent nos travaux",
+  "Research areas and current projects are managed by department and specialty.": "Les domaines et projets de recherche sont gérés par département et spécialité.",
+  "Teams & laboratories": "Équipes et laboratoires",
+  "Filter content": "Filtrer le contenu",
+  "All department content": "Tout le contenu du département",
+  "Clear filter": "Effacer le filtre",
+  "The Faculty": "La Faculté",
+  "Open resource": "Ouvrir la ressource",
+});
+
 function translate(value: string, locale: Locale) {
   if (locale === "en") return value;
+  if (cmsFrench.has(value)) return cmsFrench.get(value)!;
   if (french[value]) return french[value];
   if (/^(\d+) published resources$/.test(value)) return value.replace(/^(\d+) published resources$/, "$1 ressources publiées");
   if (/^(\d+) timetable(s)? match these filters\.$/.test(value)) return value.replace(/^(\d+) timetable(s)? match these filters\.$/, "$1 emploi(s) du temps correspondent à ces filtres.");
@@ -137,9 +175,21 @@ export function translateMessage(key: string, locale: Locale) {
 
 const originalText = new WeakMap<Text, string>();
 const originalAttributes = new WeakMap<Element, Map<string, string>>();
+const cmsFrench = new Map<string, string>();
 
 function translateDocument(locale: Locale) {
   const root = document.body;
+  cmsFrench.clear();
+  root.querySelectorAll<HTMLElement>("[data-i18n-map]").forEach((element) => {
+    try {
+      const map = JSON.parse(element.dataset.i18nMap ?? "{}") as Record<string, string>;
+      Object.entries(map).forEach(([source, translated]) => {
+        if (source.trim() && translated.trim()) cmsFrench.set(source, translated);
+      });
+    } catch {
+      // Ignore malformed CMS translation data and keep the site's static dictionary.
+    }
+  });
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const nodes: Text[] = [];
   while (walker.nextNode()) nodes.push(walker.currentNode as Text);
@@ -187,7 +237,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         translateDocument(locale);
       });
     });
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, characterData: true, subtree: true });
     return () => {
       observer.disconnect();
       if (frame !== null) window.cancelAnimationFrame(frame);

@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Download, Eye, Printer, Search } from "lucide-react";
+import { CmsTranslationMap } from "@/components/cms-translation-map";
 
-type Department = { id: string; name: string };
-type Specialty = { id: string; name: string; department_id: string };
+type Department = { id: string; name: string; translations?: { fr?: Record<string, unknown> } };
+type Specialty = { id: string; name: string; department_id: string; translations?: { fr?: Record<string, unknown> } };
 type Timetable = {
   id: string; department_id: string | null; specialization_id: string | null; scope: "faculty" | "department" | "specialty";
   level: string; semester: string; academic_year: string; status: string; mime_type: string | null; storage_path: string | null;
@@ -35,7 +36,7 @@ export function TimetableSearch({ initialDepartment = "", initialSpecialty = "" 
     if (!client) return;
     let cancelled = false;
     void Promise.all([
-      client.from("departments").select("id,name").eq("is_active", true).order("sort_order").order("name"),
+      client.from("departments").select("id,name,translations").eq("is_active", true).order("sort_order").order("name"),
       client.from("timetables").select("id,department_id,specialization_id,scope,level,semester,academic_year,status,mime_type,storage_path,file_url,source_pdf_path,source_file_name,version_number").eq("status", "published").order("academic_year", { ascending: false }),
       client.from("timetable_source_versions" as any).select("id,timetable_id,version_number,storage_path,file_name,mime_type").order("version_number", { ascending: false }),
     ]).then(([departmentResult, timetableResult, versionResult]) => {
@@ -51,7 +52,7 @@ export function TimetableSearch({ initialDepartment = "", initialSpecialty = "" 
   useEffect(() => {
     if (!client || !department) { setSpecialties([]); setSpecialty(""); return; }
     let cancelled = false;
-    void client.from("specializations").select("id,name,department_id").eq("department_id", department).eq("is_active", true).order("name")
+    void client.from("specializations").select("id,name,department_id,translations").eq("department_id", department).eq("is_active", true).order("name")
       .then(({ data }) => {
         if (cancelled) return;
         const choices = (data ?? []) as Specialty[];
@@ -106,6 +107,7 @@ export function TimetableSearch({ initialDepartment = "", initialSpecialty = "" 
 
   if (!client) return <div className="timetable-placeholder">Timetable search is not connected. Configure the public Supabase URL and publishable key.</div>;
   return <>
+    <CmsTranslationMap rows={[...departments,...specialties]}/>
     <div className="timetable-form timetable-document-filters">
       <label>Academic Year<select value={academicYear} onChange={(event) => { setAcademicYear(event.target.value); setResults(null); }}><option value="">Select Academic Year</option>{years.map((year) => <option key={year} value={year}>{year.replace("-", "–")}</option>)}</select></label>
       <label>Semester<select value={semester} onChange={(event) => { setSemester(event.target.value); setResults(null); }}><option value="">Select Semester</option>{semesters.map((value) => <option key={value}>{value}</option>)}</select></label>

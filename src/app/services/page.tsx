@@ -5,6 +5,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 import { PublicPageBlocks } from "@/components/public-page-blocks";
 import { PAGE_BANNER_IMAGES } from "@/lib/content";
 import { facultyLeaders, resolveDepartmentHeadImage } from "@/lib/department-media";
+import { CmsTranslationMap } from "@/components/cms-translation-map";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -16,8 +17,8 @@ export default async function FacultyServicesPage() {
   const client = createPublicClient();
   const [{ data: services }, { data: departmentsData }] = client
     ? await Promise.all([
-        client.from("faculty_services").select("*,department:departments(name,slug)").eq("status", "published").order("sort_order").order("name"),
-        client.from("departments").select("id,name,slug,head_name,head_title,head_bio,head_image_path").eq("is_active", true).order("name"),
+        client.from("faculty_services").select("*,department:departments(name,slug,translations)").eq("status", "published").order("sort_order").order("name"),
+        client.from("departments").select("id,name,slug,head_name,head_title,head_bio,head_image_path,translations").eq("is_active", true).order("name"),
       ])
     : [{ data: [] as any[] }, { data: [] as any[] }];
 
@@ -26,7 +27,7 @@ export default async function FacultyServicesPage() {
     department.head_name || resolveDepartmentHeadImage(department.head_image_path, department.slug),
   );
 
-  return <>
+  return <><CmsTranslationMap rows={[...(services??[]),...departments] as any}/>
     <section className="page-hero public-page-hero" style={{ backgroundImage: `linear-gradient(90deg,rgba(31,17,45,.92),rgba(48,31,63,.64)),url("${PAGE_BANNER_IMAGES.services}")` }}>
       <div className="wrap">
         <p className="section-kicker">Faculty of Science · University of Yaoundé I</p>

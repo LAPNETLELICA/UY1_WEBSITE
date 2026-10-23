@@ -4,6 +4,7 @@ import { DEPARTMENT_IMAGES, getActiveDepartments, getPublicRows } from "@/lib/co
 import type { ContentRow } from "@/lib/content";
 import { PublicPageBlocks } from "@/components/public-page-blocks";
 import { createPublicClient } from "@/lib/supabase/public";
+import { CmsTranslationMap } from "@/components/cms-translation-map";
 import { LocalizedDate } from "@/components/language-provider";
 import { HomeHero } from "@/components/home-hero";
 import { facultyLeaders, resolveDepartmentCover } from "@/lib/department-media";
@@ -101,7 +102,7 @@ export default async function HomePage() {
   const servicesRequest = supabase
     ? supabase
         .from("faculty_services")
-        .select("id,name,title,responsible_name,description,image_path,slug")
+        .select("id,name,title,responsible_name,description,image_path,slug,translations")
         .eq("status", "published")
         .order("sort_order")
         .limit(3)
@@ -155,6 +156,7 @@ export default async function HomePage() {
 
   return (
     <div className="home-page">
+      <CmsTranslationMap rows={[...activeDepartments,...livePrograms,...liveResearch,...liveNews,...liveEvents,...liveGallery,...liveDocuments,...liveServices] as any}/>
       {/* 1. Hero & Fast Access Ribbon */}
       <HomeHero />
 

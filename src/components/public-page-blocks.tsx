@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Image as ImageIcon } from "lucide-react";
 import { createPublicClient } from "@/lib/supabase/public";
+import { CmsTranslationMap } from "@/components/cms-translation-map";
 
 type Scope = "faculty" | "department" | "specialty" | "program" | "service";
 type Block = { id:string; title:string; section_key:string; block_type:string; content:Record<string,unknown>; image_path:string|null; link_label:string|null; link_url:string|null; sort_order:number };
@@ -17,12 +18,12 @@ export async function PublicPageBlocks({scope,pageKey,departmentId,specialtyId,p
   const blocks=(data??[]) as Block[];
   const includeContacts=scope!=="faculty"||pageKey==="contact";
   const [contactsResult,linksResult]=includeContacts?await Promise.all([
-    client.from("site_contacts").select("id,label,contact_type,value").eq("scope",scope).eq("is_enabled",true).order("sort_order").match({...(departmentId?{department_id:departmentId}:{}),...(specialtyId?{specialization_id:specialtyId}:{}),...(programId?{program_id:programId}:{}),...(serviceId?{service_id:serviceId}:{})}),
-    client.from("site_links").select("id,label,url,category").eq("scope",scope).eq("is_enabled",true).order("sort_order").match({...(departmentId?{department_id:departmentId}:{}),...(specialtyId?{specialization_id:specialtyId}:{}),...(programId?{program_id:programId}:{}),...(serviceId?{service_id:serviceId}:{})})
+    client.from("site_contacts").select("id,label,contact_type,value,translations").eq("scope",scope).eq("is_enabled",true).order("sort_order").match({...(departmentId?{department_id:departmentId}:{}),...(specialtyId?{specialization_id:specialtyId}:{}),...(programId?{program_id:programId}:{}),...(serviceId?{service_id:serviceId}:{})}),
+    client.from("site_links").select("id,label,url,category,translations").eq("scope",scope).eq("is_enabled",true).order("sort_order").match({...(departmentId?{department_id:departmentId}:{}),...(specialtyId?{specialization_id:specialtyId}:{}),...(programId?{program_id:programId}:{}),...(serviceId?{service_id:serviceId}:{})})
   ]):[{data:[]},{data:[]}];
   const contacts=contactsResult.data??[];const links=linksResult.data??[];
   if(!blocks.length&&!contacts.length&&!links.length)return null;
-  return <div className="cms-page-blocks">{blocks.map((block)=>{
+  return <><CmsTranslationMap rows={[...blocks,...contacts,...links] as any}/><div className="cms-page-blocks">{blocks.map((block)=>{
     const content=block.content??{};
     const description=String(content.description??content.body??content.text??"");
     const items=Array.isArray(content.items)?content.items as Record<string,unknown>[]:[];
@@ -35,5 +36,5 @@ export async function PublicPageBlocks({scope,pageKey,departmentId,specialtyId,p
       {stats.length>0&&<div className="cms-stat-grid">{stats.map((item,index)=><article key={index}><strong>{String(item.value??"")}</strong><span>{String(item.label??"")}</span></article>)}</div>}
       {items.length>0&&<div className="cms-card-grid">{items.map((item,index)=><article className="cms-content-card" key={index}>{typeof item.image==="string"&&<img src={item.image} alt={String(item.title??"")}/>}<p className="section-kicker">{String(item.eyebrow??"")}</p><h3>{String(item.title??"Content item")}</h3><p>{String(item.description??"")}</p>{typeof item.href==="string"&&<Link className="text-link" href={item.href}>{String(item.link_label??"Explore")} <ArrowUpRight size={14}/></Link>}</article>)}</div>}
     </div></section>;
-  })}{includeContacts&&(contacts.length>0||links.length>0)&&<section className="cms-block cms-contact-links" id="contact"><div className="wrap"><p className="section-kicker">Contact & useful links</p><h2 className="section-heading">Get in touch and explore.</h2><div className="cms-card-grid">{contacts.map((item:any)=><article className="cms-content-card" key={item.id}><p className="section-kicker">{item.contact_type}</p><h3>{item.label}</h3><p>{item.value}</p></article>)}{links.map((item:any)=><article className="cms-content-card" key={item.id}><p className="section-kicker">{item.category}</p><h3>{item.label}</h3><Link className="text-link" href={item.url} target={item.url.startsWith("http")?"_blank":undefined} rel={item.url.startsWith("http")?"noreferrer":undefined}>Open link <ArrowUpRight size={14}/></Link></article>)}</div></div></section>}</div>;
+  })}{includeContacts&&(contacts.length>0||links.length>0)&&<section className="cms-block cms-contact-links" id="contact"><div className="wrap"><p className="section-kicker">Contact & useful links</p><h2 className="section-heading">Get in touch and explore.</h2><div className="cms-card-grid">{contacts.map((item:any)=><article className="cms-content-card" key={item.id}><p className="section-kicker">{item.contact_type}</p><h3>{item.label}</h3><p>{item.value}</p></article>)}{links.map((item:any)=><article className="cms-content-card" key={item.id}><p className="section-kicker">{item.category}</p><h3>{item.label}</h3><Link className="text-link" href={item.url} target={item.url.startsWith("http")?"_blank":undefined} rel={item.url.startsWith("http")?"noreferrer":undefined}>Open link <ArrowUpRight size={14}/></Link></article>)}</div></div></section>}</div></>;
 }
