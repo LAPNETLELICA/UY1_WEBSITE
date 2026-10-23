@@ -11,6 +11,7 @@ import { ScrollImageReveal } from "@/components/scroll-image-reveal";
 import { TextSplitReveal } from "@/components/ui/text-split-reveal";
 import { HomeStats } from "@/components/home-stats";
 import { ParallaxImageReveal } from "@/components/parallax-image-reveal";
+import { ResearchParallaxSection } from "@/components/research-parallax-section";
 
 const departments = [
   ["01", "Biological Sciences", "From molecular biology to ecosystem stewardship, exploring life at every scale."],
@@ -244,7 +245,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-
       {/* 5. Public Timetable Access (Utilitarian Highlight) */}
       <section className="timetable-band home-timetable-band" aria-labelledby="timetable-heading">
         <div className="wrap timetable-inner home-timetable-inner">
@@ -267,7 +267,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
 
       {/* 6. Scientific Discovery & Academic Pathways (Harvard / MIT Feature Grid) */}
       <section className="section home-feature-split-section" aria-labelledby="horizons-heading">
@@ -309,7 +308,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
 
       {/* 7. Editorial Chronicle: News & Events (MIT Style Spotlight) */}
       <section className="section updates-section home-chronicle-section" aria-labelledby="updates-heading">
@@ -397,7 +395,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-
       {/* 8. Academic Pathways & Degrees (Visual Showcase with Images & Animations) */}
       <section className="section home-programs-section" aria-labelledby="programs-heading">
         <div className="wrap">
@@ -474,9 +471,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-
       {/* 9. Scientific Research Activity (Visual Showcase with Images & Animations) */}
-      <section className="section home-research-section" aria-labelledby="research-heading">
+      <ResearchParallaxSection>
         <div className="wrap">
           <div className="section-head-row home-section-head">
             <div>
@@ -549,8 +545,7 @@ export default async function HomePage() {
             })}
           </div>
         </div>
-      </section>
-
+      </ResearchParallaxSection>
 
       {/* 10. Leadership & Faculty Services Governance */}
       <section className="section faculty-services-home home-leadership-section" aria-labelledby="services-heading">
@@ -616,16 +611,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-
       {/* 11. Campus Life Gallery & Official Documentation Depository */}
       <section className="section home-campus-section" aria-labelledby="gallery-heading">
         <div className="wrap">
           <div className="section-head-row home-section-head">
-            <div>
+            <div className="home-campus-intro-card">
               <p className="section-kicker">Campus life</p>
               <h2 id="gallery-heading" className="section-heading">
                 A community at work.
               </h2>
+              <p className="section-lead home-campus-intro-lead">
+                Discover teaching, research and community activities through the Faculty gallery.
+              </p>
             </div>
             <Link className="text-link home-head-link" href="/gallery">
               See the full gallery <ArrowRight size={14} />
@@ -675,11 +672,7 @@ export default async function HomePage() {
                 </article>
               ))}
             </div>
-          ) : (
-            <p className="section-lead">
-              Discover teaching, research and community activities through the Faculty gallery.
-            </p>
-          )}
+          ) : null}
 
           {/* Official Documentation Banner */}
           <div className="document-callout home-document-callout">

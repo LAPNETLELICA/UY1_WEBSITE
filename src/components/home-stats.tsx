@@ -18,30 +18,29 @@ const statsData: StatItem[] = [
     id: "departments",
     value: 10,
     label: "Academic departments",
-    duration: 1.4,
-    delay: 0.05,
+    duration: 0.75,
+    delay: 0,
   },
   {
     id: "programs",
     value: 20,
     label: "Study pathways",
-    duration: 1.6,
-    delay: 0.12,
+    duration: 0.8,
+    delay: 0.08,
   },
   {
     id: "years",
     value: 60,
-    prefix: "+",
     label: "Years of discovery",
-    duration: 1.8,
-    delay: 0.2,
+    duration: 0.85,
+    delay: 0.16,
   },
   {
     id: "community",
     value: 1,
     label: "Community, many disciplines",
-    duration: 1.0,
-    delay: 0.28,
+    duration: 0.7,
+    delay: 0.24,
   },
 ];
 
@@ -62,12 +61,9 @@ function CounterNumber({
 }) {
   const [displayValue, setDisplayValue] = React.useState(0);
   const shouldReduceMotion = useReducedMotion();
-  const animatedOnceRef = React.useRef(false);
 
   React.useEffect(() => {
     if (!hasTriggered) return;
-    if (animatedOnceRef.current) return;
-    animatedOnceRef.current = true;
 
     if (shouldReduceMotion) {
       setDisplayValue(value);
@@ -75,10 +71,12 @@ function CounterNumber({
     }
 
     let startTimestamp: number | null = null;
-    let frameId: number;
+    let frameId: number | undefined;
+    let cancelled = false;
 
     const timeoutId = setTimeout(() => {
       const step = (timestamp: number) => {
+        if (cancelled) return;
         if (!startTimestamp) startTimestamp = timestamp;
         const elapsed = (timestamp - startTimestamp) / 1000;
         const progress = Math.min(elapsed / duration, 1);
@@ -100,8 +98,9 @@ function CounterNumber({
     }, delay * 1000);
 
     return () => {
+      cancelled = true;
       clearTimeout(timeoutId);
-      if (frameId) cancelAnimationFrame(frameId);
+      if (frameId !== undefined) cancelAnimationFrame(frameId);
     };
   }, [hasTriggered, value, duration, delay, shouldReduceMotion]);
 

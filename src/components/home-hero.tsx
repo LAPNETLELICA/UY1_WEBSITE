@@ -17,13 +17,64 @@ import {
 } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { TextSplitReveal } from "@/components/ui/text-split-reveal";
+import { useTranslation } from "@/components/language-provider";
 
 const slides = [
-  "/images/faculty/Home/1.png",
-  "/images/faculty/Home/2.png",
-  "/images/faculty/Home/3.png",
-  "/images/faculty/Home/4.png",
-  "/images/faculty/Home/5.png",
+  {
+    image: "/images/faculty/Home/21.png",
+    titleFirst: { en: "Welcome to", fr: "Bienvenue à" },
+    titleSecond: { en: "Ngoa-Ekélé", fr: "Ngoa-Ekélé" },
+    description: {
+      en: "Discover the Faculty of Science at the heart of the University of Yaoundé I, where curiosity opens new paths for Cameroon and beyond.",
+      fr: "Découvrez la Faculté des Sciences au cœur de l’Université de Yaoundé I, où la curiosité ouvre de nouvelles voies pour le Cameroun et le monde.",
+    },
+    action: { en: "Discover the Faculty", fr: "Découvrir la Faculté" },
+    href: "/about",
+  },
+  {
+    image: "/images/faculty/Home/2.png",
+    titleFirst: { en: "A campus open", fr: "Un campus ouvert" },
+    titleSecond: { en: "to the world", fr: "sur le monde" },
+    description: {
+      en: "Join a vibrant university community in Ngoa-Ekélé and build your future through science, learning and collaboration.",
+      fr: "Rejoignez une communauté universitaire vivante à Ngoa-Ekélé et construisez votre avenir par les sciences, l’apprentissage et le partage.",
+    },
+    action: { en: "Explore our departments", fr: "Explorer nos départements" },
+    href: "/departments",
+  },
+  {
+    image: "/images/faculty/Home/3.png",
+    titleFirst: { en: "Learn science.", fr: "Apprendre les sciences." },
+    titleSecond: { en: "Shape tomorrow.", fr: "Préparer demain." },
+    description: {
+      en: "Eight scientific departments bring together teaching, practical learning and new ideas for the next generation.",
+      fr: "Huit départements scientifiques réunissent enseignement, pratique et nouvelles idées pour accompagner la prochaine génération.",
+    },
+    action: { en: "View our programmes", fr: "Voir nos programmes" },
+    href: "/programs",
+  },
+  {
+    image: "/images/faculty/Home/4.png",
+    titleFirst: { en: "Innovation for", fr: "Innover pour" },
+    titleSecond: { en: "Africa’s future", fr: "l’avenir de l’Afrique" },
+    description: {
+      en: "From digital technologies to engineering, our researchers and students turn scientific ideas into practical solutions.",
+      fr: "Du numérique à l’ingénierie, nos chercheurs et étudiants transforment les idées scientifiques en solutions concrètes.",
+    },
+    action: { en: "Explore our research", fr: "Explorer notre recherche" },
+    href: "/research",
+  },
+  {
+    image: "/images/faculty/Home/5.png",
+    titleFirst: { en: "Research that", fr: "Une recherche" },
+    titleSecond: { en: "serves society", fr: "au service de la société" },
+    description: {
+      en: "Our laboratories investigate health, biodiversity, materials and the environment to address challenges that matter to our communities.",
+      fr: "Nos laboratoires étudient la santé, la biodiversité, les matériaux et l’environnement pour répondre aux défis de nos communautés.",
+    },
+    action: { en: "Discover our research", fr: "Découvrir notre recherche" },
+    href: "/research",
+  },
 ];
 
 const quickGateways = [
@@ -175,8 +226,10 @@ export function HomeHero() {
   const router = useRouter();
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const { locale } = useTranslation();
 
   const [active, setActive] = useState(0);
+  const activeSlide = slides[active];
 
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
@@ -313,11 +366,11 @@ export function HomeHero() {
           className="home-hero-track"
           style={{ transform: `translate3d(-${active * 100}%, 0, 0)` }}
         >
-          {slides.map((image, index) => (
+          {slides.map((slide, index) => (
             <div
-              key={image}
+              key={slide.image}
               className={`home-hero-slide ${index === active ? "is-active" : ""}`}
-              style={{ backgroundImage: `url("${image}")` }}
+              style={{ backgroundImage: `url("${slide.image}")` }}
             />
           ))}
         </div>
@@ -350,11 +403,6 @@ export function HomeHero() {
       <div className="hero-content">
         {/* TOP BAR: INSTITUTIONAL BADGE ON THE LEFT, SEARCH BAR SHIFTED TO THE RIGHT */}
         <div className="hero-top-bar">
-          <div className="hero-eyebrow-row">
-            <span className="eyebrow">Knowledge · Discovery · Service</span>
-            <span className="hero-tag-pill">Founded in 1962 · University of Yaoundé I</span>
-          </div>
-
           {/* SEARCH BAR SHIFTED TO THE RIGHT (BORDS CARRÉS / SQUARE BORDERS) */}
           <div className="hero-search-container hero-search-right" ref={searchContainerRef}>
             <form className="hero-search-box" onSubmit={handleSearchSubmit} role="search">
@@ -457,48 +505,29 @@ export function HomeHero() {
           </div>
         </div>
 
-        {/* MAIN INSTITUTIONAL TITLE WITH SPLIT TEXT REVEAL */}
-        <h1>
-          <TextSplitReveal text="Where curiosity" as="span" delay={0.15} />
+        {/* Slide copy changes in step with the background image. */}
+        <h1 aria-live="polite">
+          <TextSplitReveal key={`${active}-first`} text={activeSlide.titleFirst[locale]} as="span" delay={0.08} />
           <br />
-          <TextSplitReveal text="becomes" as="span" delay={0.28} />{" "}
           <em>
-            <TextSplitReveal text="discovery." as="span" delay={0.38} />
+            <TextSplitReveal key={`${active}-second`} text={activeSlide.titleSecond[locale]} as="span" delay={0.18} />
           </em>
         </h1>
 
-        {/* ENRICHED LEAD ABOUT THE UNIVERSITY (UY1 & FACULTY OF SCIENCE) */}
-        <p className="hero-lead-highlight">
+        <p className="hero-description" aria-live="polite">
           <TextSplitReveal
-            text="Central Africa's Premier Centre for Scientific & Technological Excellence"
+            key={`${active}-description`}
+            text={activeSlide.description[locale]}
             as="span"
-            delay={0.48}
-            stagger={0.03}
+            delay={0.26}
+            stagger={0.015}
           />
         </p>
 
-        {/* UNIVERSITY HIGHLIGHT PILLARS (STRUCTURED WITHOUT SATURATING THE VISUAL) */}
-        <div className="hero-highlights-strip" aria-label="Faculty hallmarks">
-          <div className="hero-highlight-item">
-            <strong>60+ Years of History</strong>
-            <span>Scientific tradition at Ngoa-Ekellé</span>
-          </div>
-          <div className="hero-highlight-divider" aria-hidden="true" />
-          <div className="hero-highlight-item">
-            <strong>8 Departments &amp; 40+ Labs</strong>
-            <span>Exact, life, earth and digital sciences</span>
-          </div>
-          <div className="hero-highlight-divider" aria-hidden="true" />
-          <div className="hero-highlight-item">
-            <strong>LMD Degree System</strong>
-            <span>Bachelor, Master and Ph.D. pathways</span>
-          </div>
-        </div>
-
         {/* ACTION BUTTONS */}
         <div className="button-row">
-          <Link href="/about" className="button button-light button-sweep">
-            Discover the faculty <ArrowRight size={16} />
+          <Link href={activeSlide.href} className="button button-light button-sweep">
+            {activeSlide.action[locale]} <ArrowRight size={16} />
           </Link>
           <Link href="/departments" className="button button-outline button-sweep">
             Explore departments

@@ -14,7 +14,7 @@ const french: Record<string, string> = {
   "Official website of the Faculty of Science": "Site officiel de la Faculté des Sciences", "University of Yaoundé I": "Université de Yaoundé I", "FACULTY OF SCIENCE": "FACULTÉ DES SCIENCES", "UNIVERSITY OF YAOUNDÉ I": "UNIVERSITÉ DE YAOUNDÉ I", "Open navigation": "Ouvrir la navigation", "Close navigation": "Fermer la navigation", "Faculty of Science homepage": "Accueil de la Faculté des Sciences",
   "Knowledge · Discovery · Service": "Savoir · Découverte · Service", "Where curiosity becomes discovery.": "Là où la curiosité devient découverte.", "At the Faculty of Science, University of Yaoundé I, we ask bold questions, nurture scientific talent and create knowledge for Cameroon and the world.": "À la Faculté des Sciences de l’Université de Yaoundé I, nous posons des questions ambitieuses, formons les talents scientifiques et produisons des connaissances pour le Cameroun et le monde.", "Discover the faculty": "Découvrir la faculté", "Explore departments": "Explorer les départements", "A LEGACY OF LEARNING": "UN HÉRITAGE D’APPRENTISSAGE",
   "Leadership · Administration · Student support": "Direction · Administration · Accompagnement des étudiants", "Faculty services and administration.": "Services et administration de la faculté.", "Meet the offices and people who support the academic and administrative life of the Faculty.": "Découvrez les services et les personnes qui soutiennent la vie académique et administrative de la Faculté.", "View Faculty Services": "Voir les services de la faculté", "Faculty service": "Service de la faculté", "Faculty leadership, academic administration and student support services will appear here when published.": "La direction, l’administration académique et les services d’accompagnement apparaîtront ici après publication.",
-  "A place for possibility": "Un lieu de possibilités", "Science with purpose.": "Une science porteuse de sens.", "Learning for life.": "Apprendre pour la vie.", "Science with purpose. Learning for life.": "Une science porteuse de sens. Apprendre pour la vie.", "Rooted in the University of Yaoundé I, our faculty brings together dedicated educators, emerging researchers and curious minds. We connect rigorous teaching with the questions that matter to our communities.": "Ancrée à l’Université de Yaoundé I, notre faculté réunit des enseignants engagés, de jeunes chercheurs et des esprits curieux. Nous associons un enseignement rigoureux aux questions qui comptent pour nos communautés.", "Meet the Faculty": "Découvrir la Faculté", "Rooted in a tradition of higher learning": "Ancrée dans une tradition d’enseignement supérieur", "Academic departments": "Départements universitaires", "Study pathways": "Parcours d’études", "Years of discovery": "Des années de découverte", "Community, many disciplines": "Une communauté, de nombreuses disciplines",
+  "A place for possibility": "Un lieu de possibilités", "Science with purpose.": "La science au service d'un but.", "Learning for life.": "Apprendre pour la vie.", "Science with purpose. Learning for life.": "La science au service d'un but. Apprendre pour la vie.", "Rooted in the University of Yaoundé I, our faculty brings together dedicated educators, emerging researchers and curious minds. We connect rigorous teaching with the questions that matter to our communities.": "Ancrée à l'Université de Yaoundé I, notre faculté réunit des enseignants dévoués, de jeunes chercheurs et des esprits curieux. Nous associons un enseignement rigoureux aux questions essentielles pour nos communautés.", "Meet the Faculty": "Découvrir la Faculté", "Rooted in a tradition of higher learning": "Ancrée dans une tradition d’enseignement supérieur", "Academic departments": "Départements universitaires", "Study pathways": "Parcours d’études", "Years of discovery": "Des années de découverte", "Community, many disciplines": "Une communauté",
   "Explore our disciplines": "Explorer nos disciplines", "A world of science, under one faculty.": "Un monde de sciences, au sein d’une même faculté.", "All departments": "Tous les départements", "DEPARTMENT": "DÉPARTEMENT", "Made for your day": "Pensé pour votre journée", "Your next class, just a few clicks away.": "Votre prochain cours, à quelques clics.", "Find the latest timetable by department, level, semester and academic year—no account required.": "Trouvez le dernier emploi du temps par département, niveau, semestre et année académique — sans compte requis.", "Find your timetable": "Trouver votre emploi du temps",
   "Learn · Investigate · Contribute": "Apprendre · Chercher · Contribuer", "Ideas that move knowledge forward.": "Des idées qui font avancer le savoir.", "Discover our research": "Découvrir notre recherche", "Research that matters": "Une recherche utile", "Meet the people, laboratories and ideas shaping research across our disciplines.": "Découvrez les personnes, laboratoires et idées qui façonnent la recherche dans nos disciplines.", "Our research": "Notre recherche", "Learning without limits": "Apprendre sans limites", "Explore programmes designed to build deep understanding and practical capability.": "Explorez des programmes conçus pour développer une compréhension approfondie et des compétences pratiques.", "Find a programme": "Trouver un programme",
   "From the faculty": "De la faculté", "Latest updates": "Dernières actualités", "All news & events": "Toutes les actualités et événements", "Save the date": "À noter", "Coming together.": "Se retrouver.", "FACULTY CALENDAR": "CALENDRIER DE LA FACULTÉ", "Event details": "Détails de l’événement", "Explore faculty news & events": "Explorer les actualités et événements", "Study at the Faculty": "Étudier à la Faculté", "Programmes with purpose.": "Des programmes porteurs de sens.", "All programmes": "Tous les programmes", "Scientific activity": "Activité scientifique", "Research and discovery.": "Recherche et découverte.", "All research": "Toute la recherche", "Campus life": "Vie du campus", "A community at work.": "Une communauté en action.", "See the full gallery": "Voir toute la galerie", "Student resources": "Ressources étudiantes", "Documentation and academic information.": "Documentation et informations académiques.", "Find public calendars, guides, forms and faculty notices.": "Trouvez les calendriers publics, guides, formulaires et avis de la faculté.", "Browse documentation": "Parcourir la documentation", "Public resources": "Ressources publiques", "published resources": "ressources publiées",
@@ -79,6 +79,40 @@ Object.assign(french, {
   "40+ Laboratoires de recherche": "40+ Laboratoires de recherche",
   "8 Départements scientifiques": "8 Départements scientifiques",
   "Défiler pour explorer": "Défiler pour explorer",
+  "Faculty of Science · UY1": "Faculté des Sciences · UY1",
+  "University and Faculty leadership": "Direction de l’Université et de la Faculté",
+  "Leadership": "Direction",
+  "Service image": "Image du service",
+  "Head of department": "Chef de département",
+  "Academic news": "Actualités académiques",
+  "Academic events": "Événements académiques",
+  "General news": "Actualités générales",
+  "General events": "Événements généraux",
+  "Faculty academic updates": "Actualités académiques de la Faculté",
+  "Faculty academic calendar": "Calendrier académique de la Faculté",
+  "Faculty community updates": "Actualités de la communauté de la Faculté",
+  "Faculty community calendar": "Calendrier de la communauté de la Faculté",
+  "Academic announcements, achievements, research and learning updates from the Faculty of Science.": "Annonces académiques, réalisations, recherche et actualités pédagogiques de la Faculté des Sciences.",
+  "Seminars, lectures, workshops and other academic events across the Faculty of Science.": "Séminaires, conférences, ateliers et autres événements académiques de la Faculté des Sciences.",
+  "General announcements, community news and Faculty-wide updates.": "Annonces générales, actualités de la communauté et informations de la Faculté.",
+  "Community events, notices and Faculty-wide activities.": "Événements communautaires, avis et activités de la Faculté.",
+  "News and event categories": "Catégories d’actualités et d’événements",
+  "No published": "Aucun élément publié",
+  "Back to all news & events": "Retour à toutes les actualités et événements",
+  "Filter content": "Filtrer le contenu",
+  "Clear filter": "Effacer le filtre",
+  "Research axes": "Axes de recherche",
+  "Questions shaping our work": "Les questions qui guident nos travaux",
+  "Research areas and current projects are managed by department and specialty.": "Les domaines de recherche et projets en cours sont gérés par département et spécialité.",
+  "Teams & laboratories": "Équipes et laboratoires",
+  "People behind the research": "Les personnes derrière la recherche",
+  "Find lead researchers, teams, laboratories and publications in each project profile.": "Retrouvez les responsables, équipes, laboratoires et publications de chaque projet.",
+  "Open album": "Ouvrir l’album",
+  "Faculty of Sciences Timetable": "Emploi du temps de la Faculté des Sciences",
+  "This document opens in a new tab.": "Ce document s’ouvre dans un nouvel onglet.",
+  "timetable document": "document d’emploi du temps",
+  "Version": "Version",
+  "Faculty of Science homepage": "Accueil de la Faculté des Sciences",
 });
 
 function translate(value: string, locale: Locale) {
@@ -89,6 +123,10 @@ function translate(value: string, locale: Locale) {
   if (/^More information about .+ will be published here\.$/.test(value)) return value.replace(/^More information about (.+) will be published here\.$/, "Plus d’informations sur $1 seront publiées ici.");
   if (/^Academic year .+$/.test(value)) return value.replace(/^Academic year (.+)$/, "Année académique $1");
   if (/^Open .+$/.test(value)) return value.replace(/^Open (.+)$/, "Ouvrir $1");
+  if (/^All (.+) specialties$/.test(value)) return value.replace(/^All (.+) specialties$/, "Toutes les spécialités de $1");
+  if (/^Head of (.+)$/.test(value)) return value.replace(/^Head of (.+)$/, "Chef de $1");
+  if (/^No (.+) published yet\.$/.test(value)) return value.replace(/^No (.+) published yet\.$/, "Aucun(e) $1 publié(e) pour le moment.");
+  if (/^Published (.+) from (.+)\.$/.test(value)) return value.replace(/^Published (.+) from (.+)\.$/, "$1 publié(e) par $2.");
   if (/^Show slide \d+$/.test(value)) return value.replace(/^Show slide (\d+)$/, "Afficher la diapositive $1");
   return value;
 }
@@ -112,7 +150,8 @@ function translateDocument(locale: Locale) {
     originalText.set(node, original);
     const leading = original.match(/^\s*/)?.[0] ?? "";
     const trailing = original.match(/\s*$/)?.[0] ?? "";
-    node.nodeValue = `${leading}${translate(original.trim(), locale)}${trailing}`;
+    const nextValue = `${leading}${translate(original.trim(), locale)}${trailing}`;
+    if (node.nodeValue !== nextValue) node.nodeValue = nextValue;
   });
   root.querySelectorAll("[aria-label], [placeholder], [title], img[alt]").forEach((element) => {
     if (element.closest("[data-no-translate]")) return;
@@ -122,7 +161,8 @@ function translateDocument(locale: Locale) {
       if (current === null) return;
       const original = saved.get(attribute) ?? current;
       saved.set(attribute, original);
-      element.setAttribute(attribute, translate(original, locale));
+      const nextValue = translate(original, locale);
+      if (current !== nextValue) element.setAttribute(attribute, nextValue);
     });
     originalAttributes.set(element, saved);
   });
@@ -131,13 +171,27 @@ function translateDocument(locale: Locale) {
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("en");
-  const setLocale = useCallback((next: Locale) => { localStorage.setItem("uy1-locale", next); setLocaleState(next); }, []);
+  const setLocale = useCallback((next: Locale) => {
+    localStorage.setItem("uy1-locale", next);
+    setLocaleState((current) => current === next ? current : next);
+  }, []);
   useEffect(() => { const saved = localStorage.getItem("uy1-locale"); if (saved === "fr" || saved === "en") setLocaleState(saved); }, []);
   useEffect(() => {
     translateDocument(locale);
-    const observer = new MutationObserver(() => translateDocument(locale));
+    document.documentElement.dataset.locale = locale;
+    let frame: number | null = null;
+    const observer = new MutationObserver(() => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = null;
+        translateDocument(locale);
+      });
+    });
     observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
   }, [locale]);
   const value = useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
