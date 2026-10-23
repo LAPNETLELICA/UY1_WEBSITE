@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getLocalizedField, getLocalizedObject } from "../src/lib/localized-content";
+import { getLocalizedField, getLocalizedObject } from "../src/lib/localized-content.ts";
 
 test("selects a French field when it is present", () => {
   assert.equal(getLocalizedField({ title: "Science", translations: { fr: { title: "Sciences" } } }, "title", "fr"), "Sciences");

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { facultyLeaders, getDepartmentFacilities, getDepartmentMedia, resolveDepartmentCover } from "../src/lib/department-media";
+import { facultyLeaders, getDepartmentFacilities, getDepartmentMedia, resolveDepartmentCover } from "../src/lib/department-media.ts";
 
 test("maps the supplied IT image only to Computer Science", () => {
   assert.equal(getDepartmentMedia("computer-science")?.coverImagePath, "/images/faculty/edb7fdd738804800b060c69e59d1b6d8.png");
