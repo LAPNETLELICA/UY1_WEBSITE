@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Microscope, BookOpen, FlaskConical } from "lucide-react";
-import { DEPARTMENT_IMAGES, getActiveDepartments, getPublicRows } from "@/lib/content";
+import { DEPARTMENT_IMAGES, PAGE_BANNER_IMAGES, getActiveDepartments, getPublicRows } from "@/lib/content";
 import type { ContentRow } from "@/lib/content";
 import { PublicPageBlocks } from "@/components/public-page-blocks";
 import { createPublicClient } from "@/lib/supabase/public";
 import { LocalizedDate } from "@/components/language-provider";
 import { HomeHero } from "@/components/home-hero";
 import { facultyLeaders, resolveDepartmentCover } from "@/lib/department-media";
+import { resolvePublicServicesPageContent } from "@/lib/services-page-content";
 
 const departments = [
   ["01", "Biological Sciences", "From molecular biology to ecosystem stewardship, exploring life at every scale."],
@@ -26,18 +27,20 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const supabase = createPublicClient();
   const servicesRequest = supabase ? supabase.from("faculty_services").select("id,name,title,responsible_name,description,image_path,slug").eq("status", "published").order("sort_order").limit(3) : Promise.resolve({ data: [] as ContentRow[] });
-  const [activeDepartments, livePrograms, liveResearch, liveNews, liveEvents, liveGallery, liveDocuments, servicesResult] = await Promise.all([
+  const pageRequest = supabase ? supabase.from("faculty_information").select("content,is_public").eq("key", "services_page").eq("is_public", true).maybeSingle() : Promise.resolve({ data: null });
+  const [activeDepartments, livePrograms, liveResearch, liveNews, liveEvents, liveGallery, liveDocuments, servicesResult, pageResult] = await Promise.all([
     getActiveDepartments(), getPublicRows("programs"), getPublicRows("research_projects"), getPublicRows("news"),
-    getPublicRows("events"), getPublicRows("gallery_items"), getPublicRows("documents"), servicesRequest,
+    getPublicRows("events"), getPublicRows("gallery_items"), getPublicRows("documents"), servicesRequest, pageRequest,
   ]);
   const liveServices = servicesResult.data ?? [];
+  const servicesPage = resolvePublicServicesPageContent(pageResult.data ?? null, PAGE_BANNER_IMAGES.services, facultyLeaders);
   const departmentItems = activeDepartments.map((d: ContentRow, i) => [String(i + 1).padStart(2, "0"), d.name, d.description || "Explore teaching, research and academic life in this department.", d.slug, resolveDepartmentCover(d.image_path, d.slug, DEPARTMENT_IMAGES[d.slug] || DEPARTMENT_IMAGES[Object.keys(DEPARTMENT_IMAGES)[i % Object.keys(DEPARTMENT_IMAGES).length]])] as const);
   const newsItems = liveNews.length ? liveNews.slice(0,3).map((x:ContentRow)=>[x.category||"FACULTY",x.title,x.published_at||"Latest faculty update",x.slug,x.image_path||""] as const) : updates.map(([tag,title,date])=>[tag,title,date,"",""] as const);
   const nextEvent = liveEvents.filter((event:ContentRow)=>event.starts_at && new Date(event.starts_at).getTime() >= Date.now()).sort((a:ContentRow,b:ContentRow)=>new Date(a.starts_at).getTime()-new Date(b.starts_at).getTime())[0] ?? liveEvents[0];
   return <div className="home-page">
     <HomeHero />
 
-    <section className="section faculty-services-home"><div className="wrap"><div className="section-head-row"><div><p className="section-kicker">Leadership · Administration · Student support</p><h2 className="section-heading">Faculty services and administration.</h2><p className="section-lead">Meet the offices and people who support the academic and administrative life of the Faculty.</p></div><Link className="text-link" href="/services">View Faculty Services <ArrowRight size={14}/></Link></div><div className="faculty-leader-grid faculty-leadership-in-services">{facultyLeaders.map((leader)=><article className="faculty-leader-card" key={leader.role}><img src={leader.imagePath} alt={`${leader.name}, ${leader.role}`} /><div><p className="section-kicker">{leader.role}</p><h3>{leader.name}</h3><p>{leader.summary}</p><Link className="text-link" href="/services">Learn about administration <ArrowRight size={14}/></Link></div></article>)}</div>{liveServices.length?<div className="resource-grid">{liveServices.map((service:ContentRow)=><article className="resource-card faculty-service-home-card" key={service.id}>{service.image_path&&<img src={service.image_path} alt={service.responsible_name||service.name}/>}<p className="section-kicker">{service.title||"Faculty service"}</p><h3>{service.name}</h3>{service.responsible_name&&<p><strong>{service.responsible_name}</strong></p>}<p>{service.description}</p></article>)}</div>:<p className="section-lead">Faculty leadership, academic administration and student support services will appear here when published.</p>}</div></section>
+    <section className="section faculty-services-home"><div className="wrap"><div className="section-head-row"><div><p className="section-kicker">{servicesPage.homeEyebrow}</p><h2 className="section-heading">{servicesPage.homeHeading}</h2><p className="section-lead">{servicesPage.homeIntroduction}</p></div><Link className="text-link" href="/services">View Faculty Services <ArrowRight size={14}/></Link></div><div className="faculty-leader-grid faculty-leadership-in-services">{servicesPage.leaders.map((leader)=><article className="faculty-leader-card" key={leader.role}><img src={leader.imagePath} alt={`${leader.name}, ${leader.role}`} /><div><p className="section-kicker">{leader.role}</p><h3>{leader.name}</h3><p>{leader.summary}</p><Link className="text-link" href="/services">Learn about administration <ArrowRight size={14}/></Link></div></article>)}</div>{liveServices.length?<div className="resource-grid">{liveServices.map((service:ContentRow)=><article className="resource-card faculty-service-home-card" key={service.id}>{service.image_path&&<img src={service.image_path} alt={service.responsible_name||service.name}/>}<p className="section-kicker">{service.title||"Faculty service"}</p><h3>{service.name}</h3>{service.responsible_name&&<p><strong>{service.responsible_name}</strong></p>}<p>{service.description}</p></article>)}</div>:<p className="section-lead">Faculty leadership, academic administration and student support services will appear here when published.</p>}</div></section>
 
     <section className="section"><div className="wrap intro-grid">
       <div className="intro-copy"><p className="section-kicker">A place for possibility</p><h2 className="section-heading">Science with purpose.<br />Learning for life.</h2><p>Rooted in the University of Yaoundé I, our faculty brings together dedicated educators, emerging researchers and curious minds. We connect rigorous teaching with the questions that matter to our communities.</p><Link className="text-link" href="/about">Meet the Faculty <ArrowRight size={15} /></Link></div>

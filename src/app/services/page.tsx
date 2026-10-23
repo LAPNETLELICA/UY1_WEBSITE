@@ -5,6 +5,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 import { PublicPageBlocks } from "@/components/public-page-blocks";
 import { PAGE_BANNER_IMAGES } from "@/lib/content";
 import { facultyLeaders, resolveDepartmentHeadImage } from "@/lib/department-media";
+import { resolvePublicServicesPageContent } from "@/lib/services-page-content";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -14,37 +15,39 @@ export const metadata: Metadata = {
 
 export default async function FacultyServicesPage() {
   const client = createPublicClient();
-  const [{ data: services }, { data: departmentsData }] = client
+  const [{ data: services }, { data: departmentsData }, { data: pageData }] = client
     ? await Promise.all([
         client.from("faculty_services").select("*,department:departments(name,slug)").eq("status", "published").order("sort_order").order("name"),
         client.from("departments").select("id,name,slug,head_name,head_title,head_bio,head_image_path").eq("is_active", true).order("name"),
+        client.from("faculty_information").select("content,is_public").eq("key", "services_page").eq("is_public", true).maybeSingle(),
       ])
-    : [{ data: [] as any[] }, { data: [] as any[] }];
+    : [{ data: [] as any[] }, { data: [] as any[] }, { data: null }];
 
+  const page = resolvePublicServicesPageContent(pageData ?? null, PAGE_BANNER_IMAGES.services, facultyLeaders);
   const departments = departmentsData ?? [];
   const leadership = departments.filter((department: any) =>
     department.head_name || resolveDepartmentHeadImage(department.head_image_path, department.slug),
   );
 
   return <>
-    <section className="page-hero public-page-hero" style={{ backgroundImage: `linear-gradient(90deg,rgba(31,17,45,.92),rgba(48,31,63,.64)),url("${PAGE_BANNER_IMAGES.services}")` }}>
+    <section className="page-hero public-page-hero" style={{ backgroundImage: `linear-gradient(90deg,rgba(31,17,45,.92),rgba(48,31,63,.64)),url("${page.bannerImage}")` }}>
       <div className="wrap">
         <p className="section-kicker">Faculty of Science · University of Yaoundé I</p>
-        <h1>Faculty services</h1>
-        <p>Meet the people and offices supporting academic leadership, administration and student services across the Faculty.</p>
+        <h1>{page.pageHeading}</h1>
+        <p>{page.pageIntroduction}</p>
       </div>
     </section>
 
     <section className="content-section"><div className="wrap">
       <div className="content-block">
         <p className="section-kicker">Administrative organization</p>
-        <h2>People and services behind the Faculty</h2>
-        <p>This directory presents published faculty offices, responsible people and departmental leadership. Contact details and roles can be maintained by authorized staff in the administration dashboard.</p>
+        <h2>{page.sectionHeading}</h2>
+        <p>{page.sectionDescription}</p>
       </div>
 
       <section className="nested-section faculty-administration-leadership">
         <div className="section-head-row"><div><p className="section-kicker">University and Faculty leadership</p><h2 className="section-heading">Leadership</h2></div></div>
-        <div className="faculty-leader-grid">{facultyLeaders.map((leader) => <article className="faculty-leader-card" key={leader.role}>
+        <div className="faculty-leader-grid">{page.leaders.map((leader, index) => <article className="faculty-leader-card" key={`${leader.role}-${index}`}>
           <img src={leader.imagePath} alt={`${leader.name}, ${leader.role}`} />
           <div><p className="section-kicker">{leader.role}</p><h3>{leader.name}</h3><p>{leader.summary}</p></div>
         </article>)}</div>
