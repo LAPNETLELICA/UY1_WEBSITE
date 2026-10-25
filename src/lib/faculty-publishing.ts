@@ -1,3 +1,5 @@
+import { normalizeContentResources, type ContentResource } from "./content-resources.ts";
+
 export type ContentType = "academic_information" | "general_announcement" | "event" | "research";
 export type PublishingInput = {
   type: ContentType;
@@ -6,6 +8,7 @@ export type PublishingInput = {
   status: "draft" | "published";
   imagePath: string;
   imagePaths: string[];
+  resourceLinks?: ContentResource[];
   startsAt?: string;
   endsAt?: string;
   location?: string;
@@ -28,7 +31,7 @@ export function buildPublishingPayload(input: PublishingInput, existing?: {slug:
   if (input.type === "event" && (!input.startsAt || Number.isNaN(Date.parse(input.startsAt)))) throw new Error("Event start date is required.");
   const destination = getPublishingDestination(input.type);
   const slug = existing?.slug || title.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  const common = { slug, image_path: input.imagePath || null, image_paths: input.imagePaths, status: input.status };
+  const common = { slug, image_path: input.imagePath || null, image_paths: input.imagePaths, resource_links: normalizeContentResources(input.resourceLinks), status: input.status };
   if (destination.table === "news") return {table: "news", payload: {...common, title, excerpt: description, body: description, category: destination.category, scope: "faculty", published_at: input.status === "published" ? new Date().toISOString() : null}};
   if (destination.table === "events") return {table: "events", payload: {...common, title, description, body: description, category: destination.category, scope: "faculty", starts_at: new Date(input.startsAt!).toISOString(), ends_at: input.endsAt ? new Date(input.endsAt).toISOString() : null, location: input.location || null}};
   return {table: "research_projects", payload: {...common, title, summary: description, details: description, scope: "faculty", lead_name: input.leadName || null, research_axis: input.researchAxis || ""}};

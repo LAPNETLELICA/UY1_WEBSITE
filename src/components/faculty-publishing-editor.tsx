@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { buildPublishingPayload, getPublishingDestination, type ContentType, type PublishingInput } from "@/lib/faculty-publishing";
+import { ContentResourceEditor } from "@/components/content-resource-editor";
+import type { ContentResource } from "@/lib/content-resources";
 
-type SavedItem = { id: string; sourceTable: "news" | "events" | "research_projects"; type: ContentType; title: string; slug: string; excerpt?: string; body?: string; description?: string; summary?: string; details?: string; image_path?: string | null; image_paths?: string[]; status: "draft" | "published"; starts_at?: string; ends_at?: string; location?: string; lead_name?: string; research_axis?: string };
-const emptyDraft: PublishingInput = {type: "academic_information", title: "", description: "", status: "draft", imagePath: "", imagePaths: []};
+type SavedItem = { id: string; sourceTable: "news" | "events" | "research_projects"; type: ContentType; title: string; slug: string; excerpt?: string; body?: string; description?: string; summary?: string; details?: string; image_path?: string | null; image_paths?: string[]; resource_links?: ContentResource[]; status: "draft" | "published"; starts_at?: string; ends_at?: string; location?: string; lead_name?: string; research_axis?: string };
+const emptyDraft: PublishingInput = {type: "academic_information", title: "", description: "", status: "draft", imagePath: "", imagePaths: [], resourceLinks: []};
 const choices: [ContentType, string][] = [["academic_information", "Academic information"], ["general_announcement", "General announcement"], ["event", "Event"], ["research", "Research"]];
 
 export function FacultyPublishingEditor() {
@@ -32,10 +34,10 @@ export function FacultyPublishingEditor() {
     setRows(items.sort((a, b) => String((b as any).created_at ?? "").localeCompare(String((a as any).created_at ?? ""))));
   }, [client]);
   useEffect(() => { void refresh(); }, [refresh]);
-  const startNew = () => {setDraft({...emptyDraft, imagePaths: []});setEditing(null);setMessage("");setOpen(true);};
+  const startNew = () => {setDraft({...emptyDraft, imagePaths: [], resourceLinks: []});setEditing(null);setMessage("");setOpen(true);};
   const startEdit = (row: SavedItem) => {
     setEditing(row);
-    setDraft({type: row.type, title: row.title, description: row.body || row.details || row.description || row.summary || row.excerpt || "", status: row.status, imagePath: row.image_path || "", imagePaths: row.image_paths || [], startsAt: row.starts_at ? row.starts_at.slice(0, 16) : "", endsAt: row.ends_at ? row.ends_at.slice(0, 16) : "", location: row.location || "", leadName: row.lead_name || "", researchAxis: row.research_axis || ""});
+    setDraft({type: row.type, title: row.title, description: row.body || row.details || row.description || row.summary || row.excerpt || "", status: row.status, imagePath: row.image_path || "", imagePaths: row.image_paths || [], resourceLinks: row.resource_links || [], startsAt: row.starts_at ? row.starts_at.slice(0, 16) : "", endsAt: row.ends_at ? row.ends_at.slice(0, 16) : "", location: row.location || "", leadName: row.lead_name || "", researchAxis: row.research_axis || ""});
     setMessage("");setOpen(true);
   };
   const upload = async (files: FileList | null, cover: boolean) => {
@@ -79,6 +81,7 @@ export function FacultyPublishingEditor() {
       {draft.type === "event" && <><label><span>Event start date *</span><input type="datetime-local" value={draft.startsAt || ""} onChange={event => update("startsAt", event.target.value)}/></label><label><span>Event end date</span><input type="datetime-local" value={draft.endsAt || ""} onChange={event => update("endsAt", event.target.value)}/></label><label><span>Location</span><input value={draft.location || ""} onChange={event => update("location", event.target.value)}/></label></>}
       {draft.type === "research" && <><label><span>Researcher</span><input value={draft.leadName || ""} onChange={event => update("leadName", event.target.value)}/></label><label><span>Research area</span><input value={draft.researchAxis || ""} onChange={event => update("researchAxis", event.target.value)}/></label></>}
       <div className="publishing-wide publishing-images"><strong>Images</strong><label><span>Cover image</span><input type="file" accept="image/jpeg,image/png,image/webp" disabled={saving} onChange={event => void upload(event.target.files, true)}/></label>{draft.imagePath && <div className="publishing-thumbnail"><img src={draft.imagePath} alt="Selected cover"/><button onClick={() => update("imagePath", "")}>Remove</button></div>}<label><span>Additional images</span><input type="file" multiple accept="image/jpeg,image/png,image/webp" disabled={saving} onChange={event => void upload(event.target.files, false)}/></label><div className="publishing-gallery">{draft.imagePaths.map((url,index) => <div className="publishing-thumbnail" key={url}><img src={url} alt={`Additional image ${index + 1}`}/><button onClick={() => update("imagePaths", draft.imagePaths.filter(item => item !== url))}>Remove</button></div>)}</div></div>
+      <ContentResourceEditor value={draft.resourceLinks || []} onChange={resources => update("resourceLinks", resources)} uploadFolder="faculty-publishing/resources" disabled={saving} onBusyChange={setSaving}/>
       <label><span>Publication status</span><select value={draft.status} onChange={event => update("status", event.target.value as PublishingInput["status"])}><option value="draft">Draft</option><option value="published">Published</option></select></label>
     </div><div className="editor-preview"><p className="section-kicker">Destination preview</p><h3>{draft.title || "Content title"}</h3><p>{draft.description || "Your description will appear here."}</p><small>Faculty home page and {destination.listingHref}</small></div>{message && message !== "Saved successfully." && <p className="admin-notice is-error">{message}</p>}<div className="editor-actions"><button className="button button-quiet" onClick={() => setOpen(false)}>Cancel</button><button className="button button-primary" disabled={saving} onClick={() => void save()}>{saving ? "Saving…" : "Save content"}</button></div></section></div>}
   </main>;

@@ -7,6 +7,7 @@ import { PAGE_BANNER_IMAGES } from "@/lib/content";
 import { facultyLeaders, resolveDepartmentHeadImage } from "@/lib/department-media";
 import { resolvePublicServicesPageContent } from "@/lib/services-page-content";
 import { CmsTranslationMap } from "@/components/cms-translation-map";
+import { ContentResourceList } from "@/components/content-resource-list";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -66,6 +67,7 @@ export default async function FacultyServicesPage() {
             {service.contact_email && <a href={`mailto:${service.contact_email}`}>{service.contact_email}</a>}
             {service.contact_phone && <a href={`tel:${service.contact_phone.replace(/[^+0-9]/g, "")}`}>{service.contact_phone}</a>}
           </div>
+          <ContentResourceList resources={service.resource_links} />
           <PublicPageBlocks scope="service" pageKey={service.slug} serviceId={service.id} departmentId={service.department_id || undefined} />
         </article>)}
       </div> : <div className="department-section-empty">

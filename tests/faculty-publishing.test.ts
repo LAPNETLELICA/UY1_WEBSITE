@@ -2,6 +2,20 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { buildPublishingPayload, getPublishingDestination } from "../src/lib/faculty-publishing.ts";
 
+test("publishing an announcement keeps its PDF and useful links", () => {
+  const result = buildPublishingPayload({
+    type: "general_announcement", title: "Exams", description: "New schedule", status: "published",
+    imagePath: "", imagePaths: [], resourceLinks: [
+      { label: "  Schedule  ", url: "https://example.edu/schedule.pdf", kind: "pdf" },
+      { label: "Portal", url: "https://example.edu/portal", kind: "link" },
+    ],
+  });
+  assert.deepEqual(result.payload.resource_links, [
+    { label: "Schedule", url: "https://example.edu/schedule.pdf", kind: "pdf" },
+    { label: "Portal", url: "https://example.edu/portal", kind: "link" },
+  ]);
+});
+
 test("routes each content type to the page that reads its saved table", () => {
   assert.deepEqual(getPublishingDestination("academic_information"), { table: "news", category: "Academic", listingHref: "/news-events/academic-news" });
   assert.deepEqual(getPublishingDestination("general_announcement"), { table: "news", category: "General", listingHref: "/news-events/general-news" });

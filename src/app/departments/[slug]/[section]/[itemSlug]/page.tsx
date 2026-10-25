@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { createPublicClient } from "@/lib/supabase/public";
+import { ContentResourceList } from "@/components/content-resource-list";
 
 export const dynamic = "force-dynamic";
 const contentTables: Record<string, { table: string; title: (row: any) => string; body: (row: any) => string; publishedOnly?: boolean }> = {
@@ -55,6 +56,7 @@ export default async function DepartmentContentDetail({ params }: { params: Prom
         {Array.isArray(item.image_paths) && item.image_paths.length > 0 && <div className="detail-image-grid">{item.image_paths.map((image: string, index: number) => <img key={`${image}-${index}`} src={image} alt={`${title} image ${index + 1}`} />)}</div>}
         {item.external_url && <p><a className="text-link" href={item.external_url} target="_blank" rel="noreferrer">Related information <ArrowUpRight size={14} /></a></p>}
         {item.document_url && <p><a className="text-link" href={item.document_url} target="_blank" rel="noreferrer">Open document <ArrowUpRight size={14} /></a></p>}
+        <ContentResourceList resources={item.resource_links} />
       </div>
       <aside className="detail-context"><p className="section-kicker">Department content</p><h2>{department.name}</h2>{specialty && <p><strong>Specialty:</strong> {specialty.name}</p>}{item.cycle && <p><strong>Study cycle:</strong> {item.cycle}</p>}{item.degree && <p><strong>Degree:</strong> {item.degree}</p>}{item.level && <p><strong>Level:</strong> {item.level}</p>}{item.storage_path && <a className="text-link" href={item.external_url || item.storage_path} target="_blank" rel="noreferrer">Open or download resource <ArrowUpRight size={14} /></a>}</aside>
       <Link className="text-link" href={`/departments/${department.slug}/${backPath}`}><ArrowLeft size={14} /> Back to {department.name} {backPath === "news-events" ? "News & Events" : backPath}</Link>
