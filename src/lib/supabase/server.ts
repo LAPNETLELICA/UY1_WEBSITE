@@ -12,7 +12,7 @@ export async function createClient() {
       getAll() {
         return cookieStore.getAll();
       },
-      setAll(values) {
+      setAll(values: any) {
         try {
           for (const { name, value, options } of values) {
             cookieStore.set(name, value, options);

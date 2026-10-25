@@ -44,8 +44,8 @@ export async function POST(request: Request) {
   const supabase = createServerClient(supabaseUrl, anonKey, {
     cookies: {
       getAll() { return cookieStore.getAll(); },
-      setAll(values) {
-        values.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+      setAll(values: any) {
+        values.forEach(({ name, value, options }: any) => cookieStore.set(name, value, options));
       },
     },
   });

@@ -14,16 +14,17 @@ const french: Record<string, string> = {
   "Official website of the Faculty of Science": "Site officiel de la Faculté des Sciences", "University of Yaoundé I": "Université de Yaoundé I", "FACULTY OF SCIENCE": "FACULTÉ DES SCIENCES", "UNIVERSITY OF YAOUNDÉ I": "UNIVERSITÉ DE YAOUNDÉ I", "Open navigation": "Ouvrir la navigation", "Close navigation": "Fermer la navigation", "Faculty of Science homepage": "Accueil de la Faculté des Sciences",
   "Knowledge · Discovery · Service": "Savoir · Découverte · Service", "Where curiosity becomes discovery.": "Là où la curiosité devient découverte.", "At the Faculty of Science, University of Yaoundé I, we ask bold questions, nurture scientific talent and create knowledge for Cameroon and the world.": "À la Faculté des Sciences de l’Université de Yaoundé I, nous posons des questions ambitieuses, formons les talents scientifiques et produisons des connaissances pour le Cameroun et le monde.", "Discover the faculty": "Découvrir la faculté", "Explore departments": "Explorer les départements", "A LEGACY OF LEARNING": "UN HÉRITAGE D’APPRENTISSAGE",
   "Leadership · Administration · Student support": "Direction · Administration · Accompagnement des étudiants", "Faculty services and administration.": "Services et administration de la faculté.", "Meet the offices and people who support the academic and administrative life of the Faculty.": "Découvrez les services et les personnes qui soutiennent la vie académique et administrative de la Faculté.", "View Faculty Services": "Voir les services de la faculté", "Faculty service": "Service de la faculté", "Faculty leadership, academic administration and student support services will appear here when published.": "La direction, l’administration académique et les services d’accompagnement apparaîtront ici après publication.",
-  "A place for possibility": "Un lieu de possibilités", "Science with purpose. Learning for life.": "Une science porteuse de sens. Apprendre pour la vie.", "Rooted in the University of Yaoundé I, our faculty brings together dedicated educators, emerging researchers and curious minds. We connect rigorous teaching with the questions that matter to our communities.": "Ancrée à l’Université de Yaoundé I, notre faculté réunit des enseignants engagés, de jeunes chercheurs et des esprits curieux. Nous associons un enseignement rigoureux aux questions qui comptent pour nos communautés.", "Meet the Faculty": "Découvrir la Faculté", "Rooted in a tradition of higher learning": "Ancrée dans une tradition d’enseignement supérieur", "Academic departments": "Départements académiques", "Study pathways": "Parcours d’études", "Years of discovery": "Années de découverte", "Community, many disciplines": "Une communauté, de nombreuses disciplines",
+  "A place for possibility": "Un lieu de possibilités", "Science with purpose.": "La science au service d'un but.", "Learning for life.": "Apprendre pour la vie.", "Science with purpose. Learning for life.": "La science au service d'un but. Apprendre pour la vie.", "Rooted in the University of Yaoundé I, our faculty brings together dedicated educators, emerging researchers and curious minds. We connect rigorous teaching with the questions that matter to our communities.": "Ancrée à l'Université de Yaoundé I, notre faculté réunit des enseignants dévoués, de jeunes chercheurs et des esprits curieux. Nous associons un enseignement rigoureux aux questions essentielles pour nos communautés.", "Meet the Faculty": "Découvrir la Faculté", "Rooted in a tradition of higher learning": "Ancrée dans une tradition d’enseignement supérieur", "Academic departments": "Départements universitaires", "Study pathways": "Parcours d’études", "Years of discovery": "Des années de découverte", "Community, many disciplines": "Une communauté",
   "Explore our disciplines": "Explorer nos disciplines", "A world of science, under one faculty.": "Un monde de sciences, au sein d’une même faculté.", "All departments": "Tous les départements", "DEPARTMENT": "DÉPARTEMENT", "Made for your day": "Pensé pour votre journée", "Your next class, just a few clicks away.": "Votre prochain cours, à quelques clics.", "Find the latest timetable by department, level, semester and academic year—no account required.": "Trouvez le dernier emploi du temps par département, niveau, semestre et année académique — sans compte requis.", "Find your timetable": "Trouver votre emploi du temps",
   "Learn · Investigate · Contribute": "Apprendre · Chercher · Contribuer", "Ideas that move knowledge forward.": "Des idées qui font avancer le savoir.", "Discover our research": "Découvrir notre recherche", "Research that matters": "Une recherche utile", "Meet the people, laboratories and ideas shaping research across our disciplines.": "Découvrez les personnes, laboratoires et idées qui façonnent la recherche dans nos disciplines.", "Our research": "Notre recherche", "Learning without limits": "Apprendre sans limites", "Explore programmes designed to build deep understanding and practical capability.": "Explorez des programmes conçus pour développer une compréhension approfondie et des compétences pratiques.", "Find a programme": "Trouver un programme",
   "From the faculty": "De la faculté", "Latest updates": "Dernières actualités", "All news & events": "Toutes les actualités et événements", "Save the date": "À noter", "Coming together.": "Se retrouver.", "FACULTY CALENDAR": "CALENDRIER DE LA FACULTÉ", "Event details": "Détails de l’événement", "Explore faculty news & events": "Explorer les actualités et événements", "Study at the Faculty": "Étudier à la Faculté", "Programmes with purpose.": "Des programmes porteurs de sens.", "All programmes": "Tous les programmes", "Scientific activity": "Activité scientifique", "Research and discovery.": "Recherche et découverte.", "All research": "Toute la recherche", "Campus life": "Vie du campus", "A community at work.": "Une communauté en action.", "See the full gallery": "Voir toute la galerie", "Student resources": "Ressources étudiantes", "Documentation and academic information.": "Documentation et informations académiques.", "Find public calendars, guides, forms and faculty notices.": "Trouvez les calendriers publics, guides, formulaires et avis de la faculté.", "Browse documentation": "Parcourir la documentation", "Public resources": "Ressources publiques", "published resources": "ressources publiées",
   "About Us · University of Yaoundé I": "À propos · Université de Yaoundé I", "Science in service of society.": "La science au service de la société.", "Discover the Faculty’s identity, mission, vision and the departments that bring its scientific community together.": "Découvrez l’identité, la mission, la vision et les départements qui réunissent la communauté scientifique de la Faculté.", "Our story and purpose": "Notre histoire et notre mission", "Mission": "Mission", "Vision": "Vision", "Organization": "Organisation", "Academic organization": "Organisation académique", "Our departments": "Nos départements", "Choose a department to explore its programmes, specialties, research and resources.": "Choisissez un département pour explorer ses programmes, spécialités, recherches et ressources.",
-  "Faculty services": "Services de la faculté", "Meet the people and offices supporting academic leadership, administration and student services across the Faculty.": "Découvrez les personnes et services qui accompagnent la direction académique, l’administration et les étudiants de la Faculté.", "Administrative organization": "Organisation administrative", "People and services behind the Faculty": "Les personnes et services de la Faculté", "Service image": "Image du service", "Faculty-wide": "À l’échelle de la faculté", "Department leadership": "Direction des départements", "Visit department": "Visiter le département", "Contact the Faculty": "Contacter la Faculté",
+  "Meet the people and offices supporting academic leadership, administration and student services across the Faculty.": "Découvrez les personnes et services qui accompagnent la direction académique, l’administration et les étudiants de la Faculté.", "Administrative organization": "Organisation administrative", "People and services behind the Faculty": "Les personnes et services de la Faculté", "Service image": "Image du service", "Faculty-wide": "À l’échelle de la faculté", "Department leadership": "Direction des départements", "Visit department": "Visiter le département",
   "Student services": "Services aux étudiants", "Find your timetable.": "Trouvez votre emploi du temps.", "Choose your department and specialty, then select a level, semester and academic year to view the latest published class schedule. No student login is needed.": "Choisissez votre département et votre spécialité, puis un niveau, un semestre et une année académique pour consulter le dernier emploi du temps publié. Aucun compte étudiant n’est requis.", "Academic Year": "Année académique", "Select Academic Year": "Sélectionner une année académique", "Semester": "Semestre", "Department": "Département", "All Faculty departments": "Tous les départements de la faculté", "Specialty": "Spécialité", "All department specialties": "Toutes les spécialités du département", "Level": "Niveau", "All levels": "Tous les niveaux", "View Timetable": "Voir l’emploi du temps", "Select an academic year and semester to find a timetable.": "Sélectionnez une année académique et un semestre pour trouver un emploi du temps.", "Select an academic year and semester first.": "Sélectionnez d’abord une année académique et un semestre.", "Timetables are temporarily unavailable. Please try again later.": "Les emplois du temps sont temporairement indisponibles. Veuillez réessayer plus tard.", "Timetable search is not connected. Configure the public Supabase URL and publishable key.": "La recherche d’emploi du temps n’est pas connectée. Configurez l’URL publique et la clé publiable Supabase.", "Preview Timetable": "Aperçu", "Hide preview": "Masquer l’aperçu", "Print": "Imprimer", "Download": "Télécharger", "Previous file versions": "Versions précédentes du fichier",
-  "Curiosity in the classroom. Discovery in the laboratory. Knowledge in service of society.": "La curiosité en salle de cours. La découverte au laboratoire. Le savoir au service de la société.", "Explore": "Explorer", "For students": "Pour les étudiants", "Find us": "Nous trouver", "Class timetables": "Emplois du temps", "Documents & forms": "Documents et formulaires", "Staff access": "Accès personnel", "Built for knowledge and discovery": "Conçu pour le savoir et la découverte", "Back": "Retour", "Go back": "Retour", "Go back to the previous page": "Revenir à la page précédente",
+  "Curiosity in the classroom. Discovery in the laboratory. Knowledge in service of society.": "La curiosité en salle de cours. La découverte au laboratoire. Le savoir au service de la société.", "For students": "Pour les étudiants", "Find us": "Nous trouver", "Class timetables": "Emplois du temps", "Documents & forms": "Documents et formulaires", "Staff access": "Accès personnel", "Built for knowledge and discovery": "Conçu pour le savoir et la découverte", "Back": "Retour", "Go back": "Retour", "Go back to the previous page": "Revenir à la page précédente",
   "The Faculty": "La Faculté", "Academic programmes": "Programmes académiques", "Research & innovation": "Recherche et innovation", "News from the Faculty": "Actualités de la Faculté", "Events & academic dates": "Événements et dates académiques", "Faculty gallery": "Galerie de la Faculté", "Documents & resources": "Documents et ressources", "Contact the Faculty": "Contacter la Faculté", "Page not found": "Page introuvable", "That page isn’t here.": "Cette page n’existe pas.", "Return home": "Retour à l’accueil", "Learn more": "En savoir plus", "Open link": "Ouvrir le lien", "Contact & useful links": "Contact et liens utiles", "Get in touch and explore.": "Contactez-nous et explorez.",
-  "Where curiosity": "Là où la curiosité", "becomes": "devient", "discovery.": "découverte.", "Explore this department’s teaching, research and academic resources.": "Explorez l’enseignement, la recherche et les ressources académiques de ce département.", "Department timetables": "Emplois du temps du département", "Department programmes": "Programmes du département", "Specialties": "Spécialités", "Our Department": "Notre département", "Teaching areas:": "Domaines d’enseignement :", "Research areas:": "Domaines de recherche :", "Head of department:": "Chef de département :", "Faculty → Department": "Faculté → Département", "Teaching and research connect through programmes, specialties and academic resources.": "L’enseignement et la recherche s’articulent autour des programmes, spécialités et ressources académiques.", "Areas of study": "Domaines d’études", "SPECIALTY": "SPÉCIALITÉ", "Specialty profiles will appear when published.": "Les profils de spécialités apparaîtront après publication.", "Study": "Études", "No published programmes yet.": "Aucun programme publié pour le moment.", "Explore department programmes": "Explorer les programmes du département", "Discover": "Découvrir", "Research projects will appear here when published.": "Les projets de recherche apparaîtront ici après publication.", "Resources": "Ressources", "Published items will appear here.": "Les éléments publiés apparaîtront ici.", "Browse": "Parcourir", "Department resources": "Ressources du département", "Department sections": "Sections du département", "Filter by specialty": "Filtrer par spécialité", "All department content": "Tout le contenu du département", "Filter content": "Filtrer le contenu", "Clear filter": "Effacer le filtre", "Back to": "Retour à", "Content space": "Espace de contenu", "Introduction": "Introduction", "Images & media": "Images et médias", "Related resources": "Ressources associées", "General Faculty timetable": "Emploi du temps général de la faculté", "Department timetable": "Emploi du temps du département", "General Faculty": "Faculté générale", "Entire Department": "Tout le département", "Specific Specialty": "Spécialité spécifique", "File:": "Fichier :", "Version": "Version", "Open": "Ouvrir"
+  "Where curiosity": "Là où la curiosité", "becomes": "devient", "discovery.": "découverte.", "Explore this department’s teaching, research and academic resources.": "Explorez l’enseignement, la recherche et les ressources académiques de ce département.", "Department timetables": "Emplois du temps du département", "Department programmes": "Programmes du département", "Specialties": "Spécialités", "Our Department": "Notre département", "Teaching areas:": "Domaines d’enseignement :", "Research areas:": "Domaines de recherche :", "Head of department:": "Chef de département :", "Faculty → Department": "Faculté → Département", "Teaching and research connect through programmes, specialties and academic resources.": "L’enseignement et la recherche s’articulent autour des programmes, spécialités et ressources académiques.", "Areas of study": "Domaines d’études", "SPECIALTY": "SPÉCIALITÉ", "Specialty profiles will appear when published.": "Les profils de spécialités apparaîtront après publication.", "Study": "Études", "No published programmes yet.": "Aucun programme publié pour le moment.", "Explore department programmes": "Explorer les programmes du département", "Discover": "Découvrir", "Research projects will appear here when published.": "Les projets de recherche apparaîtront ici après publication.", "Resources": "Ressources", "Published items will appear here.": "Les éléments publiés apparaîtront ici.", "Browse": "Parcourir", "Department resources": "Ressources du département", "Department sections": "Sections du département", "Filter by specialty": "Filtrer par spécialité", "All department content": "Tout le contenu du département", "Filter content": "Filtrer le contenu", "Clear filter": "Effacer le filtre", "Back to": "Retour à", "Content space": "Espace de contenu", "Introduction": "Introduction", "Images & media": "Images et médias", "Related resources": "Ressources associées", "General Faculty timetable": "Emploi du temps général de la faculté", "Department timetable": "Emploi du temps du département", "General Faculty": "Faculté générale", "Entire Department": "Tout le département", "Specific Specialty": "Spécialité spécifique", "File:": "Fichier :", "Version": "Version", "Open": "Ouvrir",
+  "Bachelor in Computer Science": "Licence en Informatique", "Algorithms, software engineering, systems and digital innovation.": "Algorithmique, génie logiciel, systèmes et innovation numérique.", "Master in Biochemistry & Biotechnology": "Master en Biochimie & Biotechnologies", "Molecular biology, pharmacology and natural bioresources valorization.": "Biologie moléculaire, pharmacologie et valorisation des bioressources.", "Doctorate in Materials Physics & Energy": "Doctorat en Physique des Matériaux & Énergie", "Nanomaterials, renewable energy systems and computational physics.": "Nanosciences, systèmes énergétiques renouvelables et physique computationnelle.", "Natural Substances & Phyto-Chemistry": "Substances Naturelles & Phytochimie", "Extraction of bioactive agents from Cameroon medicinal plants and bio-control.": "Extraction d’actifs de la flore médicinale camerounaise et biocontrôle.", "Artificial Intelligence & Modeling": "Intelligence Artificielle & Modélisation", "Machine learning for environmental monitoring and health diagnostics.": "Apprentissage automatique pour la surveillance environnementale et la santé.", "Georesources, Water & Environment": "Géoressources, Eaux & Environnement", "Aquifer dynamics, seismic risk mapping and sustainable resources in Central Africa.": "Dynamique des aquifères, cartographie sismique et ressources durables en Afrique centrale.", "View programme": "Voir le programme", "Discover project": "Découvrir le projet"
 };
 
 const keyedMessages: Record<string, string> = {
@@ -61,16 +62,109 @@ Object.assign(french, {
   "Faculty staff": "Personnel de la Faculté", "Administrator sign in": "Connexion administrateur", "Secure access to faculty content management.": "Accès sécurisé à la gestion des contenus de la Faculté.", "Name": "Identifiant", "Password": "Mot de passe", "Signing in…": "Connexion…", "Sign in securely": "Se connecter de manière sécurisée", "Public visitors do not need an account.": "Les visiteurs publics n’ont pas besoin de compte.", "View student timetables": "Voir les emplois du temps étudiants",
   "Loading records…": "Chargement des éléments…", "Loading timetables…": "Chargement des emplois du temps…", "No records found": "Aucun élément trouvé", "No timetables found": "Aucun emploi du temps trouvé", "Create": "Créer", "Edit": "Modifier", "Delete record": "Supprimer l’élément", "Delete timetable": "Supprimer l’emploi du temps", "Cancel": "Annuler", "Save content": "Enregistrer le contenu", "Saving…": "Enregistrement…", "Upload failed:": "Échec de l’importation :", "Save failed:": "Échec de l’enregistrement :", "Delete failed:": "Échec de la suppression :", "Global search": "Recherche globale", "All statuses": "Tous les statuts", "All academic years": "Toutes les années académiques", "All semesters": "Tous les semestres", "Search": "Rechercher", "Filter by status": "Filtrer par statut", "Filter by department": "Filtrer par département", "Filter by specialty": "Filtrer par spécialité", "Filter by academic year": "Filtrer par année académique", "Filter by semester": "Filtrer par semestre", "Filter by level": "Filtrer par niveau", "Choose existing media…": "Choisir un média existant…", "Or paste a public URL": "Ou collez une URL publique", "Preview current file": "Aperçu du fichier actuel", "File selected:": "Fichier sélectionné :", "Open file": "Ouvrir le fichier", "No file": "Aucun fichier", "Actions": "Actions", "Status": "Statut", "Scope": "Portée", "Last modified": "Dernière modification", "Academic year": "Année académique", "Department / specialty": "Département / spécialité", "View site": "Voir le site", "Add Timetable": "Ajouter un emploi du temps", "Timetable Management": "Gestion des emplois du temps", "Content management": "Gestion de contenu", "Welcome,": "Bienvenue,", "Published / active": "Publié / actif", "Faculty hierarchy": "Hiérarchie de la faculté", "Live structure": "Structure active", "PUBLIC DESTINATION": "DESTINATION PUBLIQUE", "Open public section": "Ouvrir la section publique", "Edit content": "Modifier le contenu", "Create record": "Créer un élément", "Edit record": "Modifier l’élément", "Close editor": "Fermer l’éditeur", "Preview": "Aperçu", "Timetable preview": "Aperçu de l’emploi du temps", "Content title": "Titre du contenu", "New content preview": "Aperçu du nouveau contenu", "Untitled record": "Élément sans titre", "No summary": "Aucun résumé", "Active": "Actif", "Published": "Publié", "Draft / unpublished": "Brouillon / non publié", "Archived": "Archivé", "unpublished": "non publié", "draft": "brouillon", "published": "publié", "archived": "archivé", "active": "actif", "inactive": "inactif", "Semester 1": "Semestre 1", "Semester 2": "Semestre 2",
   "Faculty highlights": "Temps forts de la Faculté", "Hero slides": "Diapositives de la bannière", "Previous slide": "Diapositive précédente", "Next slide": "Diapositive suivante",
+  "Fast Access": "Accès Rapide", "Search the faculty...": "Rechercher sur le site...", "Search programs, departments, research, timetables...": "Rechercher formations, départements, recherche, emplois du temps...", "Clear search": "Effacer la recherche", "No results found for": "Aucun résultat trouvé pour", "No results found": "Aucun résultat trouvé", "Press Enter to search all departments": "Appuyez sur Entrée pour rechercher dans les départements", "Popular searches": "Recherches fréquentes", "Departments": "Départements", "Programs": "Formations", "Timetables": "Emplois du temps", "Research": "Recherche", "Documents": "Documents", "All results": "Tous les résultats", "Quick academic gateways": "Accès académiques rapides",
+  "Central Africa's Premier Centre for Scientific & Technological Excellence": "Premier centre universitaire d'excellence scientifique et technologique au Cameroun et en Afrique Centrale",
+  "Founded in 1962 · University of Yaoundé I": "Fondée en 1962 · Université de Yaoundé I",
+  "60+ Years of History": "Plus de 60 ans d'histoire",
+  "Scientific tradition at Ngoa-Ekellé": "Tradition scientifique à Ngoa-Ekellé",
+  "8 Departments & 40+ Labs": "8 Départements & 40+ Laboratoires",
+  "Exact, life, earth and digital sciences": "Sciences exactes, du vivant, de la terre et du numérique",
+  "LMD Degree System": "Système LMD & Doctorats",
+  "Bachelor, Master and Ph.D. pathways": "Parcours Licence, Master et Doctorat d'excellence",
+  "Scientific research": "Recherche scientifique",
+  "CAMPUS DE NGOA-EKELLÉ · UNIVERSITÉ DE YAOUNDÉ I": "CAMPUS DE NGOA-EKELLÉ · UNIVERSITÉ DE YAOUNDÉ I",
+  "L'Excellence Scientifique en Action.": "L'Excellence Scientifique en Action.",
+  "Au cœur du premier pôle d'enseignement supérieur et de recherche scientifique d'Afrique centrale.": "Au cœur du premier pôle d'enseignement supérieur et de recherche scientifique d'Afrique centrale.",
+  "Faculté des Sciences · Fondée en 1962": "Faculté des Sciences · Fondée en 1962",
+  "40+ Laboratoires de recherche": "40+ Laboratoires de recherche",
+  "8 Départements scientifiques": "8 Départements scientifiques",
+  "Défiler pour explorer": "Défiler pour explorer",
+  "Faculty of Science · UY1": "Faculté des Sciences · UY1",
+  "University and Faculty leadership": "Direction de l’Université et de la Faculté",
+  "Leadership": "Direction",
+  "Service image": "Image du service",
+  "Head of department": "Chef de département",
+  "Academic news": "Actualités académiques",
+  "Academic events": "Événements académiques",
+  "General news": "Actualités générales",
+  "General events": "Événements généraux",
+  "Faculty academic updates": "Actualités académiques de la Faculté",
+  "Faculty academic calendar": "Calendrier académique de la Faculté",
+  "Faculty community updates": "Actualités de la communauté de la Faculté",
+  "Faculty community calendar": "Calendrier de la communauté de la Faculté",
+  "Academic announcements, achievements, research and learning updates from the Faculty of Science.": "Annonces académiques, réalisations, recherche et actualités pédagogiques de la Faculté des Sciences.",
+  "Seminars, lectures, workshops and other academic events across the Faculty of Science.": "Séminaires, conférences, ateliers et autres événements académiques de la Faculté des Sciences.",
+  "General announcements, community news and Faculty-wide updates.": "Annonces générales, actualités de la communauté et informations de la Faculté.",
+  "Community events, notices and Faculty-wide activities.": "Événements communautaires, avis et activités de la Faculté.",
+  "News and event categories": "Catégories d’actualités et d’événements",
+  "No published": "Aucun élément publié",
+  "Back to all news & events": "Retour à toutes les actualités et événements",
+  "Filter content": "Filtrer le contenu",
+  "Clear filter": "Effacer le filtre",
+  "Research axes": "Axes de recherche",
+  "Questions shaping our work": "Les questions qui guident nos travaux",
+  "Research areas and current projects are managed by department and specialty.": "Les domaines de recherche et projets en cours sont gérés par département et spécialité.",
+  "Teams & laboratories": "Équipes et laboratoires",
+  "People behind the research": "Les personnes derrière la recherche",
+  "Find lead researchers, teams, laboratories and publications in each project profile.": "Retrouvez les responsables, équipes, laboratoires et publications de chaque projet.",
+  "Open album": "Ouvrir l’album",
+  "Faculty of Sciences Timetable": "Emploi du temps de la Faculté des Sciences",
+  "This document opens in a new tab.": "Ce document s’ouvre dans un nouvel onglet.",
+  "timetable document": "document d’emploi du temps",
+  "Version": "Version",
+  "Faculty of Science homepage": "Accueil de la Faculté des Sciences",
+});
+
+Object.assign(french, {
+  "Department profiles will appear here as they are published in the faculty content system.": "Les profils des départements apparaîtront ici dès leur publication dans le système de contenu de la Faculté.",
+  "Choose a specialty, level, semester and academic year to view or download the matching timetable.": "Choisissez une spécialité, un niveau, un semestre et une année académique pour consulter ou télécharger l’emploi du temps correspondant.",
+  "Explore the fields of study, learning objectives and career pathways offered by this department.": "Explorez les domaines d’études, les objectifs pédagogiques et les débouchés proposés par ce département.",
+  "Find your specialty.": "Trouvez votre spécialité.",
+  "Build a pathway in": "Construisez votre parcours en",
+  "Each specialty profile includes objectives, teaching areas, research and career information.": "Chaque profil de spécialité présente ses objectifs, ses domaines d’enseignement, ses recherches et ses débouchés.",
+  "Browse department programmes and research or open a specialty for content linked specifically to that field.": "Parcourez les programmes et les recherches du département, ou ouvrez une spécialité pour consulter son contenu dédié.",
+  "This department section is ready for its content to be published.": "Cette section du département est prête à recevoir son contenu.",
+  "Names, roles, portraits and professional biographies are maintained in the administration dashboard.": "Les noms, fonctions, portraits et biographies professionnelles sont gérés dans le tableau de bord d’administration.",
+  "Select Semester": "Sélectionner un semestre",
+  "Open access for all students": "Accessible à tous les étudiants",
+  "Downloadable PDF documents": "Documents PDF téléchargeables",
+  "Official academic schedules": "Calendriers académiques officiels",
+  "Learn about administration": "Découvrir l’administration",
+  "Timetable": "Emploi du temps",
+  "Images will appear here": "Les images apparaîtront ici",
+  "Add and publish gallery images linked to this album in the admin dashboard.": "Ajoutez et publiez dans le tableau de bord les images associées à cet album.",
+  "Album photographs": "Photos de l’album",
+  "Specialty profiles are ready to be added": "Les profils de spécialité peuvent être ajoutés",
+  "A dedicated learning and research pathway within this department.": "Un parcours d’études et de recherche dédié au sein de ce département.",
+  "Image area · ready for content": "Zone d’image · en attente de contenu",
+  "Consult / download": "Consulter / télécharger",
+  "View document": "Voir le document",
+  "Read more": "Lire la suite",
+  "Open album": "Ouvrir l’album",
+  "Research axes": "Axes de recherche",
+  "Questions shaping our work": "Les questions qui orientent nos travaux",
+  "Research areas and current projects are managed by department and specialty.": "Les domaines et projets de recherche sont gérés par département et spécialité.",
+  "Teams & laboratories": "Équipes et laboratoires",
+  "Filter content": "Filtrer le contenu",
+  "All department content": "Tout le contenu du département",
+  "Clear filter": "Effacer le filtre",
+  "The Faculty": "La Faculté",
+  "Open resource": "Ouvrir la ressource",
 });
 
 function translate(value: string, locale: Locale) {
   if (locale === "en") return value;
+  if (cmsFrench.has(value)) return cmsFrench.get(value)!;
   if (french[value]) return french[value];
   if (/^(\d+) published resources$/.test(value)) return value.replace(/^(\d+) published resources$/, "$1 ressources publiées");
   if (/^(\d+) timetable(s)? match these filters\.$/.test(value)) return value.replace(/^(\d+) timetable(s)? match these filters\.$/, "$1 emploi(s) du temps correspondent à ces filtres.");
   if (/^More information about .+ will be published here\.$/.test(value)) return value.replace(/^More information about (.+) will be published here\.$/, "Plus d’informations sur $1 seront publiées ici.");
   if (/^Academic year .+$/.test(value)) return value.replace(/^Academic year (.+)$/, "Année académique $1");
   if (/^Open .+$/.test(value)) return value.replace(/^Open (.+)$/, "Ouvrir $1");
+  if (/^All (.+) specialties$/.test(value)) return value.replace(/^All (.+) specialties$/, "Toutes les spécialités de $1");
+  if (/^Head of (.+)$/.test(value)) return value.replace(/^Head of (.+)$/, "Chef de $1");
+  if (/^No (.+) published yet\.$/.test(value)) return value.replace(/^No (.+) published yet\.$/, "Aucun(e) $1 publié(e) pour le moment.");
+  if (/^Published (.+) from (.+)\.$/.test(value)) return value.replace(/^Published (.+) from (.+)\.$/, "$1 publié(e) par $2.");
   if (/^Show slide \d+$/.test(value)) return value.replace(/^Show slide (\d+)$/, "Afficher la diapositive $1");
   return value;
 }
@@ -81,9 +175,21 @@ export function translateMessage(key: string, locale: Locale) {
 
 const originalText = new WeakMap<Text, string>();
 const originalAttributes = new WeakMap<Element, Map<string, string>>();
+const cmsFrench = new Map<string, string>();
 
 function translateDocument(locale: Locale) {
   const root = document.body;
+  cmsFrench.clear();
+  root.querySelectorAll<HTMLElement>("[data-i18n-map]").forEach((element) => {
+    try {
+      const map = JSON.parse(element.dataset.i18nMap ?? "{}") as Record<string, string>;
+      Object.entries(map).forEach(([source, translated]) => {
+        if (source.trim() && translated.trim()) cmsFrench.set(source, translated);
+      });
+    } catch {
+      // Ignore malformed CMS translation data and keep the site's static dictionary.
+    }
+  });
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const nodes: Text[] = [];
   while (walker.nextNode()) nodes.push(walker.currentNode as Text);
@@ -94,7 +200,8 @@ function translateDocument(locale: Locale) {
     originalText.set(node, original);
     const leading = original.match(/^\s*/)?.[0] ?? "";
     const trailing = original.match(/\s*$/)?.[0] ?? "";
-    node.nodeValue = `${leading}${translate(original.trim(), locale)}${trailing}`;
+    const nextValue = `${leading}${translate(original.trim(), locale)}${trailing}`;
+    if (node.nodeValue !== nextValue) node.nodeValue = nextValue;
   });
   root.querySelectorAll("[aria-label], [placeholder], [title], img[alt]").forEach((element) => {
     if (element.closest("[data-no-translate]")) return;
@@ -104,7 +211,8 @@ function translateDocument(locale: Locale) {
       if (current === null) return;
       const original = saved.get(attribute) ?? current;
       saved.set(attribute, original);
-      element.setAttribute(attribute, translate(original, locale));
+      const nextValue = translate(original, locale);
+      if (current !== nextValue) element.setAttribute(attribute, nextValue);
     });
     originalAttributes.set(element, saved);
   });
@@ -113,13 +221,27 @@ function translateDocument(locale: Locale) {
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("en");
-  const setLocale = useCallback((next: Locale) => { localStorage.setItem("uy1-locale", next); setLocaleState(next); }, []);
+  const setLocale = useCallback((next: Locale) => {
+    localStorage.setItem("uy1-locale", next);
+    setLocaleState((current) => current === next ? current : next);
+  }, []);
   useEffect(() => { const saved = localStorage.getItem("uy1-locale"); if (saved === "fr" || saved === "en") setLocaleState(saved); }, []);
   useEffect(() => {
     translateDocument(locale);
-    const observer = new MutationObserver(() => translateDocument(locale));
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    document.documentElement.dataset.locale = locale;
+    let frame: number | null = null;
+    const observer = new MutationObserver(() => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = null;
+        translateDocument(locale);
+      });
+    });
+    observer.observe(document.body, { childList: true, characterData: true, subtree: true });
+    return () => {
+      observer.disconnect();
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
   }, [locale]);
   const value = useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
@@ -133,7 +255,7 @@ export function LanguageSwitcher() {
 
 export function useTranslation() {
   const context = useContext(LanguageContext);
-  if (!context) throw new Error("useTranslation must be used inside LanguageProvider");
+  if (!context) return { locale: "en" as Locale, t: (key: string) => key };
   return { locale: context.locale, t: (key: string) => translateMessage(key, context.locale) };
 }
 
