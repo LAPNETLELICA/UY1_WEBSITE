@@ -4,7 +4,7 @@ import { ArrowRight, ArrowUpRight, Building2 } from "lucide-react";
 import { createPublicClient } from "@/lib/supabase/public";
 import { PublicPageBlocks } from "@/components/public-page-blocks";
 import { PAGE_BANNER_IMAGES } from "@/lib/content";
-import { facultyLeaders, resolveDepartmentHeadImage } from "@/lib/department-media";
+import { facultyLeaders, resolveDepartmentHeadImage, shouldShowLeaderPortrait } from "@/lib/department-media";
 import { resolvePublicServicesPageContent } from "@/lib/services-page-content";
 import { CmsTranslationMap } from "@/components/cms-translation-map";
 import { ContentResourceList } from "@/components/content-resource-list";
@@ -50,7 +50,7 @@ export default async function FacultyServicesPage() {
       <section className="nested-section faculty-administration-leadership">
         <div className="section-head-row"><div><p className="section-kicker">University and Faculty leadership</p><h2 className="section-heading">Leadership</h2></div></div>
         <div className="faculty-leader-grid">{page.leaders.map((leader, index) => <article className="faculty-leader-card" key={`${leader.role}-${index}`}>
-          <img src={leader.imagePath} alt={`${leader.name}, ${leader.role}`} />
+          {leader.imagePath && shouldShowLeaderPortrait(leader.role) && <img src={leader.imagePath} alt={`${leader.name}, ${leader.role}`} />}
           <div><p className="section-kicker">{leader.role}</p><h3>{leader.name}</h3><p>{leader.summary}</p></div>
         </article>)}</div>
       </section>

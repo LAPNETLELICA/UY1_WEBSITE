@@ -15,7 +15,7 @@ interface ParallaxImageRevealProps {
 }
 
 export function ParallaxImageReveal({
-  imageSrc = "/images/faculty/Home/3.png",
+  imageSrc = "/images/faculty/4192ff7d4e9a442ab2de89125a75f87b.png",
   imageAlt = "Campus de Ngoa-Ekellé - Faculté des Sciences, Université de Yaoundé I",
   kicker = "CAMPUS DE NGOA-EKELLÉ · UNIVERSITÉ DE YAOUNDÉ I",
   title = "L'Excellence Scientifique en Action.",

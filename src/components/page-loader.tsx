@@ -24,5 +24,5 @@ export function PageLoader() {
     return () => document.removeEventListener("click", onClick, true);
   }, []);
 
-  return <div className={`page-loader ${visible ? "is-visible" : ""}`} aria-hidden="true"><span className="page-loader-mark">UY1</span><span className="page-loader-line" /></div>;
+  return <div className={`page-loader ${visible ? "is-visible" : ""}`} aria-hidden="true"><img className="page-loader-logo" src="/uy1-seal-transparent.png" alt="" /><span className="page-loader-line" /></div>;
 }

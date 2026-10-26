@@ -7,8 +7,8 @@ export async function POST(request: Request) {
   const apiError = (code: "auth.notConfigured" | "auth.invalidRequest" | "auth.invalidCredentials", status: number) => NextResponse.json({ error: code }, { status });
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseUrl || !anonKey || !serviceRoleKey) {
+  const adminKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !anonKey || !adminKey) {
     return apiError("auth.notConfigured", 503);
   }
 
@@ -26,9 +26,9 @@ export async function POST(request: Request) {
     return apiError("auth.invalidCredentials", 401);
   }
 
-  // This lookup uses the service-role key on the server only. The username mapping
-  // table is not exposed to browser clients or public API roles.
-  const admin = createClient(supabaseUrl, serviceRoleKey, {
+  // This lookup uses a secret/service-role key on the server only. The username
+  // mapping table is not exposed to browser clients or public API roles.
+  const admin = createClient(supabaseUrl, adminKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
   const { data: identity, error: lookupError } = await admin

@@ -10,13 +10,23 @@ The University seal was supplied at `/home/lelica/Downloads/univ_Yaoundé_1.png`
 
 ## Local development
 
-Requirements: Node.js 20.9+ and npm.
+Requirements: Node.js 22.12+ and npm 10+.
 
 1. `npm install`
-2. Set `NEXT_PUBLIC_SUPABASE_URL` (the project API URL, `https://<project-ref>.supabase.co`), `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `NEXT_PUBLIC_SITE_URL` in `.env.local`.
+2. Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SUPABASE_URL` (the project API URL, `https://<project-ref>.supabase.co`), `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, and server-only `SITE_URL`.
 3. Apply `supabase/migrations/202609280001_initial_schema.sql`, `supabase/migrations/202609280002_admin_usernames.sql`, and `supabase/migrations/202609280003_faculty_content_architecture.sql` to a dedicated Supabase project. Apply later migrations in numeric order as well: 004 adds department media fields; 005 optionally mirrors login metadata onto profiles. Login uses the protected `admin_login_identities` table created in migration 002, so migration 005 is not required to sign in.
 4. Set either `SUPABASE_SECRET_KEY` (`sb_secret_...`) or the legacy `SUPABASE_SERVICE_ROLE_KEY` in the server environment for admin name lookup; never expose it to browser code or use a `NEXT_PUBLIC_` prefix.
 5. Run `npm run dev` and open `http://localhost:3000`.
+
+Run `npm run check` before merging. It type-checks the application and runs the focused unit tests with Node's built-in test runner.
+
+## Railway deployment
+
+Set the Railway service root directory to `UY1_WEBSITE` when connecting the parent repository. Railway detects `npm run build` and `npm start`; configure `/api/health` as the deployment healthcheck. Generate a public Railway domain (or attach the production custom domain) before sending administrator invitations.
+
+In Railway Variables, set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, `SITE_URL`, and `SUPABASE_SECRET_KEY` (or the legacy `SUPABASE_SERVICE_ROLE_KEY`). `SITE_URL` is the preferred runtime source for invitation redirects. If it is intentionally omitted, the server can use Railway's `RAILWAY_PUBLIC_DOMAIN`; it must have a public domain attached. Do not run database migrations as a Railway pre-deploy command: apply the reviewed Supabase migrations separately, in order, against the intended environment.
+
+Set the Supabase Auth Site URL to the production site and allow the exact administrator redirect paths (or the reviewed path pattern): `https://your-domain/admin-uy1-*`, plus `https://your-domain/admin/super-reset`. Supabase silently falls back to its Site URL when a requested redirect is not allow-listed, so verify this configuration by sending a non-production test invitation first. The Supabase Invite User email template must preserve `{{ .RedirectTo }}`.
 
 No service-role secret belongs in the browser or `NEXT_PUBLIC_*` variables. Keep Supabase environments separate for development and production.
 

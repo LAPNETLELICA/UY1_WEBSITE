@@ -16,6 +16,7 @@ const mediaBySlug: Record<string, DepartmentMedia> = {
   mathematics: { coverImagePath: asset("5919450fabb14b379a92af9f8575e49f (Edited 4).png"), headImagePath: asset("HODMATH.png") },
   physics: { coverImagePath: asset("5919450fabb14b379a92af9f8575e49f (Edited 5).png"), headImagePath: asset("HODPHY.png") },
   "earth-universe-sciences-geology": { coverImagePath: asset("8ce3ed7f2968499eaf7b365c61955c35 (Edited 5).png"), headImagePath: asset("HODRE.png") },
+  microbiology: { coverImagePath: asset("e084937e92c34b46beba5a387bc16c18 (Edited 5).png") },
   "earth-sciences": { coverImagePath: asset("8ce3ed7f2968499eaf7b365c61955c35 (Edited 5).png"), headImagePath: asset("HODRE.png") },
   geology: { coverImagePath: asset("8ce3ed7f2968499eaf7b365c61955c35 (Edited 6).png") },
   "biological-sciences": { coverImagePath: asset("e084937e92c34b46beba5a387bc16c18 (Edited 2).png") },
@@ -26,6 +27,7 @@ export function getDepartmentMedia(slug: string): DepartmentMedia | undefined { 
 export function getDepartmentCover(slug: string): string | undefined { return getDepartmentMedia(slug)?.coverImagePath; }
 export function resolveDepartmentCover(imagePath: string | null | undefined, slug: string, genericFallback: string): string { return imagePath || getDepartmentCover(slug) || genericFallback; }
 export function resolveDepartmentHeadImage(imagePath: string | null | undefined, slug: string): string | undefined { return imagePath || getDepartmentMedia(slug)?.headImagePath; }
+export function shouldShowLeaderPortrait(role: string): boolean { return !/\b(dean|doyen)\b/i.test(role); }
 
 export const facultyLeaders: FacultyLeader[] = [
   {

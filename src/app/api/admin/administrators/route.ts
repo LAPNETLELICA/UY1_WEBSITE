@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminLookupClient } from "@/lib/supabase/admin";
 import { departmentPortalPath } from "@/lib/department-admin-portal";
+import { invitationConfigurationMessage, invitationSiteOrigin } from "@/lib/site-url";
 
 const hasValidDepartmentAdminPassword = (value: string) => value.length >= 8 && value.length <= 256 && /[^A-Za-z0-9]/.test(value);
 
@@ -74,7 +75,8 @@ export async function POST(request: NextRequest) {
     .maybeSingle();
   if (departmentError || !department) return NextResponse.json({ error: "Select an active department for this administrator." }, { status: 400 });
 
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
+  const origin = invitationSiteOrigin(process.env, request.nextUrl.origin);
+  if (!origin) return NextResponse.json({ error: invitationConfigurationMessage() }, { status: 503 });
   const { data: account, error: accountError } = await admin.auth.admin.inviteUserByEmail(email, {
     redirectTo: `${origin.replace(/\/$/, "")}${departmentPortalPath(department.slug)}`,
     data: { display_name: displayName, username },
@@ -135,7 +137,8 @@ export async function PATCH(request: NextRequest) {
     if (typeof body?.requestId === "string") await admin.from("department_admin_password_requests").update({ status: "resolved", resolved_at: new Date().toISOString(), resolved_by: (await admin.auth.getUser(request.headers.get("authorization")?.replace(/^Bearer\s+/i, ""))).data.user?.id ?? null }).eq("id", body.requestId).eq("user_id", userId);
     return NextResponse.json({ ok: true, passwordSet: true });
   }
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
+  const origin = invitationSiteOrigin(process.env, request.nextUrl.origin);
+  if (!origin) return NextResponse.json({ error: invitationConfigurationMessage() }, { status: 503 });
   const { data: department } = profile.department_id
     ? await admin.from("departments").select("slug").eq("id", profile.department_id).eq("is_active", true).maybeSingle()
     : { data: null };

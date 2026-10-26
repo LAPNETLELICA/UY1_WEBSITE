@@ -4,9 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Download, Eye, Printer, Search } from "lucide-react";
 import { CmsTranslationMap } from "@/components/cms-translation-map";
+import { DEPARTMENT_FALLBACKS, TIMETABLE_FALLBACKS } from "@/lib/content";
 
-type Department = { id: string; name: string; translations?: { fr?: Record<string, unknown> } };
-type Specialty = { id: string; name: string; department_id: string; translations?: { fr?: Record<string, unknown> } };
+type Department = { id: string; name: string; slug?: string; translations?: { fr?: Record<string, unknown> } };
+type Specialty = { id: string; name: string; slug?: string; department_id: string; translations?: { fr?: Record<string, unknown> } };
 type Timetable = {
   id: string; department_id: string | null; specialization_id: string | null; scope: "faculty" | "department" | "specialty";
   level: string; semester: string; academic_year: string; status: string; mime_type: string | null; storage_path: string | null;
@@ -33,48 +34,116 @@ export function TimetableSearch({ initialDepartment = "", initialSpecialty = "" 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!client) return;
     let cancelled = false;
-    void Promise.all([
-      client.from("departments").select("id,name,translations").eq("is_active", true).order("sort_order").order("name"),
-      client.from("timetables").select("id,department_id,specialization_id,scope,level,semester,academic_year,status,mime_type,storage_path,file_url,source_pdf_path,source_file_name,version_number").eq("status", "published").order("academic_year", { ascending: false }),
-      client.from("timetable_source_versions" as any).select("id,timetable_id,version_number,storage_path,file_name,mime_type").order("version_number", { ascending: false }),
-    ]).then(([departmentResult, timetableResult, versionResult]) => {
+    const loadTimetableData = async () => {
+      let depts: Department[] = [];
+      let tts: Timetable[] = [];
+      let vers: FileVersion[] = [];
+
+      if (client) {
+        try {
+          const [departmentResult, timetableResult, versionResult] = await Promise.all([
+            client.from("departments").select("id,name,slug,translations").eq("is_active", true).order("sort_order").order("name"),
+            client.from("timetables").select("id,department_id,specialization_id,scope,level,semester,academic_year,status,mime_type,storage_path,file_url,source_pdf_path,source_file_name,version_number").eq("status", "published").order("academic_year", { ascending: false }),
+            client.from("timetable_source_versions" as any).select("id,timetable_id,version_number,storage_path,file_name,mime_type").order("version_number", { ascending: false }),
+          ]);
+          if (!cancelled) {
+            depts = (departmentResult.data ?? []) as Department[];
+            tts = (timetableResult.data ?? []) as Timetable[];
+            vers = (versionResult.data ?? []) as FileVersion[];
+          }
+        } catch {
+          // Fall back gracefully below
+        }
+      }
+
       if (cancelled) return;
-      if (departmentResult.error || timetableResult.error) { setNotice("Timetables are temporarily unavailable. Please try again later."); return; }
-      setDepartments((departmentResult.data ?? []) as Department[]);
-      setTimetables((timetableResult.data ?? []) as Timetable[]);
-      setVersions((versionResult.data ?? []) as FileVersion[]);
-    });
+
+      if (!depts.length) {
+        depts = DEPARTMENT_FALLBACKS.map(d => ({
+          id: d.id || d.slug,
+          name: d.name,
+          slug: d.slug,
+        }));
+      }
+
+      if (!tts.length) {
+        tts = TIMETABLE_FALLBACKS.map(t => {
+          const matchedDept = depts.find(d => d.slug === t.department_id || d.id === t.department_id);
+          return {
+            ...t,
+            department_id: matchedDept ? matchedDept.id : t.department_id,
+          } as Timetable;
+        });
+      }
+
+      setDepartments(depts);
+      if (initialDepartment) {
+        const match = depts.find(d => d.id === initialDepartment || d.slug === initialDepartment);
+        if (match) setDepartment(match.id);
+      }
+      setTimetables(tts);
+      setVersions(vers);
+    };
+
+    void loadTimetableData();
     return () => { cancelled = true; };
-  }, [client]);
+  }, [client, initialDepartment]);
 
   useEffect(() => {
     if (!client || !department) { setSpecialties([]); setSpecialty(""); return; }
     let cancelled = false;
-    void client.from("specializations").select("id,name,department_id,translations").eq("department_id", department).eq("is_active", true).order("name")
+    void client.from("specializations").select("id,name,slug,department_id,translations").eq("department_id", department).eq("is_active", true).order("name")
       .then(({ data }) => {
         if (cancelled) return;
         const choices = (data ?? []) as Specialty[];
         setSpecialties(choices);
-        if (specialty && !choices.some((item) => item.id === specialty)) setSpecialty("");
+        if (initialSpecialty) {
+          const match = choices.find(s => s.id === initialSpecialty || s.slug === initialSpecialty);
+          if (match) setSpecialty(match.id);
+        } else if (specialty && !choices.some((item) => item.id === specialty)) {
+          setSpecialty("");
+        }
       });
     return () => { cancelled = true; };
-  }, [client, department, specialty]);
+  }, [client, department, specialty, initialSpecialty]);
 
   const contextualTables = useMemo(() => timetables.filter((item) => {
     const file = item.source_pdf_path || item.file_url || item.storage_path;
     if (!file) return false;
-    if (item.scope !== "faculty" && !departments.some((row) => row.id === item.department_id)) return false;
+    if (item.scope !== "faculty" && !departments.some((row) => row.id === item.department_id || (row.slug && row.slug === item.department_id))) return false;
     if (!department) return true;
     if (item.scope === "faculty") return false;
-    if (item.department_id !== department) return false;
+    const currentDept = departments.find(d => d.id === department || d.slug === department);
+    const itemDept = departments.find(d => d.id === item.department_id || d.slug === item.department_id);
+    const matchesDept = item.department_id === department || (currentDept && itemDept && currentDept.slug === itemDept.slug);
+    if (!matchesDept) return false;
     return !specialty || item.scope === "department" || item.specialization_id === specialty;
   }), [timetables, departments, department, specialty]);
+
   const years = useMemo(() => Array.from(new Set(contextualTables.map((item) => item.academic_year))).sort((a, b) => b.localeCompare(a)), [contextualTables]);
   const levels = useMemo(() => Array.from(new Set(contextualTables.filter((item) =>
     (!academicYear || item.academic_year === academicYear) && (!semester || item.semester === semester),
   ).map((item) => item.level).filter(Boolean))).sort((a, b) => a.localeCompare(b)), [contextualTables, academicYear, semester]);
+
+  useEffect(() => {
+    if (years.length > 0 && !academicYear) {
+      setAcademicYear(years[0]);
+    }
+    if (!semester) {
+      setSemester("Semester 1");
+    }
+  }, [years, academicYear, semester]);
+
+  useEffect(() => {
+    if (academicYear && semester && results === null && contextualTables.length > 0) {
+      const matching = contextualTables.filter((item) => item.academic_year === academicYear && item.semester === semester && (!level || item.level === level));
+      if (matching.length > 0) {
+        setResults(matching);
+        setNotice("");
+      }
+    }
+  }, [academicYear, semester, level, contextualTables, results]);
 
   const viewTimetable = () => {
     if (!academicYear || !semester) { setNotice("Select an academic year and semester first."); setResults(null); return; }
@@ -87,17 +156,19 @@ export function TimetableSearch({ initialDepartment = "", initialSpecialty = "" 
   const publicFileUrl = (path: string | null) => {
     if (!path) return "";
     if (/^https?:\/\//i.test(path)) return path;
+    if (path.startsWith("/")) return path;
     return client?.storage.from("faculty-public").getPublicUrl(path).data.publicUrl ?? "";
   };
   const downloadUrl = (item: Timetable | FileVersion) => {
     const path = "timetable_id" in item ? item.storage_path : item.source_pdf_path || (item.storage_path && !/^https?:\/\//i.test(item.storage_path) ? item.storage_path : item.file_url || item.storage_path);
     if (!path) return "";
     if (/^https?:\/\//i.test(path)) return path;
+    if (path.startsWith("/")) return path;
     return client?.storage.from("faculty-public").getPublicUrl(path, { download: true }).data.publicUrl ?? "";
   };
   const itemTitle = (item: Timetable) => [
-    item.scope === "faculty" ? "General Faculty timetable" : departments.find((row) => row.id === item.department_id)?.name ?? "Department timetable",
-    item.specialization_id ? specialties.find((row) => row.id === item.specialization_id)?.name : null,
+    item.scope === "faculty" ? "General Faculty timetable" : (departments.find((row) => row.id === item.department_id || row.slug === item.department_id)?.name ?? "Department timetable"),
+    item.specialization_id ? specialties.find((row) => row.id === item.specialization_id || row.slug === item.specialization_id)?.name : null,
     item.level, item.semester, item.academic_year,
   ].filter(Boolean).join(" · ");
   const printOne = (id: string) => {
@@ -105,7 +176,6 @@ export function TimetableSearch({ initialDepartment = "", initialSpecialty = "" 
     window.setTimeout(() => { const frame = document.getElementById(`timetable-preview-${id}`) as HTMLIFrameElement | null; if (frame?.contentWindow) frame.contentWindow.print(); else window.print(); }, 250);
   };
 
-  if (!client) return <div className="timetable-placeholder">Timetable search is not connected. Configure the public Supabase URL and publishable key.</div>;
   return <>
     <CmsTranslationMap rows={[...departments,...specialties]}/>
     <div className="timetable-form timetable-document-filters">

@@ -7,22 +7,13 @@ import { createPublicClient } from "@/lib/supabase/public";
 import { CmsTranslationMap } from "@/components/cms-translation-map";
 import { LocalizedDate } from "@/components/language-provider";
 import { HomeHero } from "@/components/home-hero";
-import { facultyLeaders, resolveDepartmentCover } from "@/lib/department-media";
+import { facultyLeaders, resolveDepartmentCover, shouldShowLeaderPortrait } from "@/lib/department-media";
 import { ScrollImageReveal } from "@/components/scroll-image-reveal";
 import { TextSplitReveal } from "@/components/ui/text-split-reveal";
 import { HomeStats } from "@/components/home-stats";
 import { ParallaxImageReveal } from "@/components/parallax-image-reveal";
 import { ResearchParallaxSection } from "@/components/research-parallax-section";
 import { resolvePublicServicesPageContent } from "@/lib/services-page-content";
-
-const departments = [
-  ["01", "Biological Sciences", "From molecular biology to ecosystem stewardship, exploring life at every scale."],
-  ["02", "Chemistry", "Building foundational and applied knowledge for a changing world."],
-  ["03", "Computer Science", "Developing computational thinking, technology and digital innovation."],
-  ["04", "Earth Sciences", "Understanding the planet, its resources and its dynamic systems."],
-  ["05", "Mathematics", "Advancing the language of patterns, logic and quantitative discovery."],
-  ["06", "Physics", "Investigating the principles that shape matter, energy and the universe."],
-];
 
 const updates = [
   ["ACADEMIC LIFE", "Applications open for the new academic year", "Admissions · 12 September 2026"],
@@ -428,7 +419,9 @@ export default async function HomePage() {
                 p.image_path ||
                 (p.department?.slug && DEPARTMENT_IMAGES[p.department.slug]) ||
                 "/images/faculty/edb7fdd738804800b060c69e59d1b6d8.png";
-              const targetHref = p.slug ? (p.department?.slug ? `/departments/${p.department.slug}/programs` : `/programs/${p.slug}`) : "/programs";
+              const targetHref = p.slug
+                ? (p.department?.slug ? `/departments/${p.department.slug}/programs/${p.slug}` : `/programs/${p.slug}`)
+                : (p.id ? (p.department?.slug ? `/departments/${p.department.slug}/programs/${p.id}` : `/programs/${p.id}`) : "/programs");
 
               return (
                 <article
@@ -574,13 +567,13 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* Distinguished Academic Governance (Rector / Dean) */}
+          {/* Faculty leadership */}
           <div className="faculty-leader-grid faculty-leadership-in-services home-governance-grid">
             {servicesPage.leaders.map((leader) => (
               <article className="faculty-leader-card home-leader-card" key={leader.role}>
-                <div className="home-leader-photo-wrap">
+                {leader.imagePath && shouldShowLeaderPortrait(leader.role) && <div className="home-leader-photo-wrap">
                   <img src={leader.imagePath} alt={`${leader.name}, ${leader.role}`} />
-                </div>
+                </div>}
                 <div className="home-leader-details">
                   <p className="section-kicker">{leader.role}</p>
                   <h3>{leader.name}</h3>

@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "typecheck": "tsc --noEmit",
+    "lint": "npm run typecheck",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "check": "npm run typecheck && npm test"
+  },
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

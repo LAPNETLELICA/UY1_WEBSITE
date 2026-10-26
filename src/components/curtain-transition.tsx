@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import Image from "next/image";
 import { useTranslation } from "@/components/language-provider";
 
 type CurtainPhase = "idle" | "covering" | "holding" | "revealing";
@@ -279,14 +278,7 @@ export function CurtainTransitionProvider({ children }: { children: React.ReactN
                   boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
                 }}
               >
-                <Image
-                  src="/uy1-seal.png"
-                  alt="UY1 Seal"
-                  width={42}
-                  height={42}
-                  priority
-                  style={{ width: "42px", height: "42px", objectFit: "contain", display: "block" }}
-                />
+                <img src="/uy1-seal-transparent.png" alt="" aria-hidden="true" style={{ width: 42, height: 52, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
               </div>
 
               {/* Kicker */}

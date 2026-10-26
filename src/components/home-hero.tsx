@@ -21,7 +21,7 @@ import { useTranslation } from "@/components/language-provider";
 
 const slides = [
   {
-    image: "/images/faculty/Home/21.png",
+    image: "/images/faculty/edb7fdd738804800b060c69e59d1b6d8.png",
     titleFirst: { en: "Welcome to", fr: "Bienvenue à" },
     titleSecond: { en: "Ngoa-Ekélé", fr: "Ngoa-Ekélé" },
     description: {
@@ -32,7 +32,7 @@ const slides = [
     href: "/about",
   },
   {
-    image: "/images/faculty/Home/2.png",
+    image: "/images/faculty/Dropped Image (2).png",
     titleFirst: { en: "A campus open", fr: "Un campus ouvert" },
     titleSecond: { en: "to the world", fr: "sur le monde" },
     description: {
@@ -43,37 +43,15 @@ const slides = [
     href: "/departments",
   },
   {
-    image: "/images/faculty/Home/3.png",
+    image: "/images/faculty/d00f550a623d409abae408a6041817a8(1) (Edited).png",
     titleFirst: { en: "Learn science.", fr: "Apprendre les sciences." },
     titleSecond: { en: "Shape tomorrow.", fr: "Préparer demain." },
     description: {
-      en: "Eight scientific departments bring together teaching, practical learning and new ideas for the next generation.",
-      fr: "Huit départements scientifiques réunissent enseignement, pratique et nouvelles idées pour accompagner la prochaine génération.",
+      en: "Ten scientific departments bring together teaching, practical learning and new ideas for the next generation.",
+      fr: "Dix départements scientifiques réunissent enseignement, pratique et nouvelles idées pour accompagner la prochaine génération.",
     },
     action: { en: "View our programmes", fr: "Voir nos programmes" },
     href: "/programs",
-  },
-  {
-    image: "/images/faculty/Home/4.png",
-    titleFirst: { en: "Innovation for", fr: "Innover pour" },
-    titleSecond: { en: "Africa’s future", fr: "l’avenir de l’Afrique" },
-    description: {
-      en: "From digital technologies to engineering, our researchers and students turn scientific ideas into practical solutions.",
-      fr: "Du numérique à l’ingénierie, nos chercheurs et étudiants transforment les idées scientifiques en solutions concrètes.",
-    },
-    action: { en: "Explore our research", fr: "Explorer notre recherche" },
-    href: "/research",
-  },
-  {
-    image: "/images/faculty/Home/5.png",
-    titleFirst: { en: "Research that", fr: "Une recherche" },
-    titleSecond: { en: "serves society", fr: "au service de la société" },
-    description: {
-      en: "Our laboratories investigate health, biodiversity, materials and the environment to address challenges that matter to our communities.",
-      fr: "Nos laboratoires étudient la santé, la biodiversité, les matériaux et l’environnement pour répondre aux défis de nos communautés.",
-    },
-    action: { en: "Discover our research", fr: "Découvrir notre recherche" },
-    href: "/research",
   },
 ];
 
@@ -121,12 +99,20 @@ const SEARCH_DATABASE: SearchItem[] = [
     keywords: ["physique", "physics", "energie", "materiaux", "optique", "mecanique", "electronique"],
   },
   {
-    id: "dep-chem",
-    title: "Chemistry",
+    id: "dep-organic-chemistry",
+    title: "Organic Chemistry",
     category: "Departments",
-    description: "Chimie organique, inorganique, environnement et phytochimie",
-    href: "/departments/chemistry",
-    keywords: ["chimie", "chemistry", "organique", "minerale", "substances naturelles", "laboratoire"],
+    description: "Chimie organique, synthèse, substances naturelles et applications",
+    href: "/departments/organic-chemistry",
+    keywords: ["chimie", "chemistry", "organique", "synthese", "substances naturelles", "laboratoire"],
+  },
+  {
+    id: "dep-inorganic-chemistry",
+    title: "Inorganic Chemistry",
+    category: "Departments",
+    description: "Chimie inorganique, matériaux, minéraux et environnement",
+    href: "/departments/inorganic-chemistry",
+    keywords: ["chimie", "chemistry", "inorganique", "minerale", "materiaux", "laboratoire"],
   },
   {
     id: "dep-bioch",
@@ -135,6 +121,14 @@ const SEARCH_DATABASE: SearchItem[] = [
     description: "Biologie moléculaire, pharmacologie, biotechnologies et nutrition",
     href: "/departments/biochemistry",
     keywords: ["biochimie", "biochemistry", "biotechnologies", "moleculaire", "sante", "pharmacologie"],
+  },
+  {
+    id: "dep-microbiology",
+    title: "Microbiology",
+    category: "Departments",
+    description: "Microorganismes, santé, alimentation et environnement",
+    href: "/departments/microbiology",
+    keywords: ["microbiologie", "microbiology", "bacteries", "virus", "sante", "laboratoire"],
   },
   {
     id: "dep-anibio",
@@ -154,11 +148,11 @@ const SEARCH_DATABASE: SearchItem[] = [
   },
   {
     id: "dep-earth",
-    title: "Earth Sciences",
+    title: "Earth and Universe Sciences (Geology)",
     category: "Departments",
     description: "Géologie, géophysique, hydrologie et ressources minières",
-    href: "/departments/earth-sciences",
-    keywords: ["sciences de la terre", "earth sciences", "geologie", "mines", "geophysique", "eau", "environnement"],
+    href: "/departments/earth-universe-sciences-geology",
+    keywords: ["sciences de la terre", "earth sciences", "geologie", "universe", "mines", "geophysique", "eau", "environnement"],
   },
   // Programs
   {

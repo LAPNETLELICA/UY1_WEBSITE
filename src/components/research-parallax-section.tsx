@@ -14,7 +14,7 @@ export function ResearchParallaxSection({ children }: { children: React.ReactNod
   return (
     <section ref={sectionRef} className="section home-research-section research-parallax-section" aria-labelledby="research-heading">
       <div className="research-parallax-background" aria-hidden="true">
-        <motion.img src="/images/faculty/Home/21.png" alt="" style={reduceMotion ? undefined : { y: imageY }} />
+        <motion.img src="/images/faculty/5cf327f811d74be29b075eb21c38a5ff (Edited 3).png" alt="" style={reduceMotion ? undefined : { y: imageY }} />
       </div>
       <div className="research-parallax-scrim" aria-hidden="true" />
       <motion.div

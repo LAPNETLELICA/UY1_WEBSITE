@@ -23,13 +23,27 @@ export default async function DepartmentContentDetail({ params }: { params: Prom
   const { data: department } = await client.from("departments").select("id,name,slug").eq("slug", departmentSlug).eq("is_active", true).maybeSingle();
   if (!department) notFound();
 
-  const identifier = section === "gallery" || section === "documents" ? "id" : "slug";
-  let query = client.from(config.table).select("*").eq(identifier, itemSlug).eq("department_id", department.id);
-  if (section === "programs") query = query.eq("is_active", true);
-  else if (section === "research") query = query.in("status", ["published", "completed"]);
-  else if (config.publishedOnly) query = query.eq("status", "published");
-  const { data: item } = await query.maybeSingle();
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(itemSlug);
+  const identifier = isUuid ? "id" : (section === "gallery" || section === "documents" ? "id" : "slug");
+  let query = client.from(config.table).select("*").eq(identifier, itemSlug);
+  let { data: item } = await query.eq("department_id", department.id).maybeSingle();
+  if (!item) {
+    const { data: fallbackItem } = await query.maybeSingle();
+    if (fallbackItem) {
+      if (fallbackItem.department_id === department.id) {
+        item = fallbackItem;
+      } else if (fallbackItem.specialization_id) {
+        const { data: spec } = await client.from("specializations").select("department_id").eq("id", fallbackItem.specialization_id).maybeSingle();
+        if (spec?.department_id === department.id) item = fallbackItem;
+      } else if (fallbackItem.scope === "faculty") {
+        item = fallbackItem;
+      }
+    }
+  }
   if (!item) notFound();
+  if (section === "programs" && !item.is_active) notFound();
+  if (section === "research" && !["published", "completed"].includes(item.status)) notFound();
+  if (config.publishedOnly && item.status !== "published") notFound();
 
   let specialty: { name: string; slug: string } | null = null;
   if (item.specialization_id) {
@@ -58,7 +72,7 @@ export default async function DepartmentContentDetail({ params }: { params: Prom
         {item.document_url && <p><a className="text-link" href={item.document_url} target="_blank" rel="noreferrer">Open document <ArrowUpRight size={14} /></a></p>}
         <ContentResourceList resources={item.resource_links} />
       </div>
-      <aside className="detail-context"><p className="section-kicker">Department content</p><h2>{department.name}</h2>{specialty && <p><strong>Specialty:</strong> {specialty.name}</p>}{item.cycle && <p><strong>Study cycle:</strong> {item.cycle}</p>}{item.degree && <p><strong>Degree:</strong> {item.degree}</p>}{item.level && <p><strong>Level:</strong> {item.level}</p>}{item.storage_path && <a className="text-link" href={item.external_url || item.storage_path} target="_blank" rel="noreferrer">Open or download resource <ArrowUpRight size={14} /></a>}</aside>
+      <aside className="detail-context"><p className="section-kicker">Department content</p><h2>{department.name}</h2>{specialty && <p><strong>Specialty:</strong> {specialty.name}</p>}{item.cycle && <p><strong>Study cycle:</strong> {item.cycle}</p>}{item.degree && <p><strong>Degree:</strong> {item.degree}</p>}{item.level && <p><strong>Level:</strong> {item.level}</p>}{item.academic_year && <p><strong>Academic period:</strong> {item.academic_year}</p>}{item.storage_path && <a className="text-link" href={item.external_url || item.storage_path} target="_blank" rel="noreferrer">Open or download resource <ArrowUpRight size={14} /></a>}</aside>
       <Link className="text-link" href={`/departments/${department.slug}/${backPath}`}><ArrowLeft size={14} /> Back to {department.name} {backPath === "news-events" ? "News & Events" : backPath}</Link>
     </article></section>
   </>;

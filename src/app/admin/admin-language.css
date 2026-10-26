@@ -1,0 +1,8 @@
+.admin-side-heading strong {
+  font-size: 0;
+}
+
+.admin-side-heading strong::after {
+  content: "Faculty content";
+  font-size: 13px;
+}

@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { buildPublishingPayload, getPublishingDestination, type ContentType, type PublishingInput } from "@/lib/faculty-publishing";
 import { ContentResourceEditor } from "@/components/content-resource-editor";
 import type { ContentResource } from "@/lib/content-resources";
+import { friendlyErrorMessage } from "@/lib/friendly-error";
 
 type SavedItem = { id: string; sourceTable: "news" | "events" | "research_projects"; type: ContentType; title: string; slug: string; excerpt?: string; body?: string; description?: string; summary?: string; details?: string; image_path?: string | null; image_paths?: string[]; resource_links?: ContentResource[]; status: "draft" | "published"; starts_at?: string; ends_at?: string; location?: string; lead_name?: string; research_axis?: string };
 const emptyDraft: PublishingInput = {type: "academic_information", title: "", description: "", status: "draft", imagePath: "", imagePaths: [], resourceLinks: []};
@@ -66,12 +67,12 @@ export function FacultyPublishingEditor() {
     setSaving(true);setMessage("");
     const request = editing ? client.from(result.table).update(result.payload).eq("id", editing.id) : client.from(result.table).insert(result.payload);
     const {error} = await request;
-    if (error) setMessage(`${error.message}${error.code ? ` (${error.code})` : ""}`);
+    if (error) setMessage(friendlyErrorMessage(error.message));
     else {setMessage("Saved successfully.");setOpen(false);await refresh();}
     setSaving(false);
   };
   const destination = getPublishingDestination(draft.type);
-  return <main className="admin-main faculty-publishing"><div className="admin-topbar"><div><p className="section-kicker">Faculty CMS</p><h1>Publish content</h1><p>Create news, events, and research for the Faculty website.</p></div><button className="button button-primary" onClick={startNew}>New content</button></div>
+  return <main className="admin-main faculty-publishing"><div className="admin-topbar"><div><p className="section-kicker">Faculty content</p><h1>Publish content</h1><p>Create news, events, and research for the Faculty website.</p></div><button className="button button-primary" onClick={startNew}>New content</button></div>
     {message && <p className={`admin-notice ${message === "Saved successfully." ? "is-success" : "is-error"}`}>{message}</p>}
     <div className="admin-publishing-list">{rows.map(row => <article className="admin-record" key={`${row.sourceTable}-${row.id}`}><div className="admin-record-copy"><span className="section-kicker">{choices.find(([type]) => type === row.type)?.[1]}</span><h2>{row.title}</h2><p>{row.excerpt || row.summary || row.description}</p><small>{row.status}</small></div><button className="button button-quiet" onClick={() => startEdit(row)}>Edit</button></article>)}</div>
     {open && <div className="admin-editor-backdrop" onMouseDown={event => {if(event.target === event.currentTarget)setOpen(false);}}><section className="admin-editor" aria-label="Publish content"><div className="editor-heading"><div><p className="section-kicker">{editing ? "Edit content" : "Create content"}</p><h2>{editing?.title || "New Faculty content"}</h2></div><button aria-label="Close editor" onClick={() => setOpen(false)}>×</button></div><div className="editor-fields">

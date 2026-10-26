@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, MapPin, Mail, Phone } from "lucide-react";
-import Image from "next/image";
 import { createPublicClient } from "@/lib/supabase/public";
 import { SiteChromeGuard } from "@/components/site-chrome-guard";
 
@@ -42,9 +41,7 @@ export function SiteFooter() {
       <div className="footer-main wrap">
         <div className="footer-intro">
           <Link href="/" className="brand footer-brand">
-            <span className="brand-seal">
-              <Image src="/uy1-seal.png" alt="University of Yaoundé I seal" width={46} height={46} />
-            </span>
+            <img className="brand-seal-image" src="/uy1-seal-transparent.png" alt="" aria-hidden="true" />
             <span className="brand-copy">
               <strong>FACULTY OF SCIENCE</strong>
               <small>UNIVERSITY OF YAOUNDÉ I</small>

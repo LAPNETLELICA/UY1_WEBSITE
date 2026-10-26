@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, BookOpen, CalendarDays, Clock3, FileText, FlaskConical, Images, Newspaper, type LucideIcon } from "lucide-react";
 import { createPublicClient } from "@/lib/supabase/public";
+import { DEPARTMENT_FALLBACKS } from "@/lib/content";
 import { PublicPageBlocks } from "@/components/public-page-blocks";
 import { CmsTranslationMap } from "@/components/cms-translation-map";
 import { ContentResourceList } from "@/components/content-resource-list";
@@ -9,9 +10,27 @@ import { ContentResourceList } from "@/components/content-resource-list";
 export const dynamic = "force-dynamic";
 export default async function SpecialtyPage({params}:{params:Promise<{slug:string;specialtySlug:string}>}) {
   const {slug,specialtySlug}=await params; const client=createPublicClient(); if(!client) notFound();
-  const {data:department}=await client.from("departments").select("*").eq("slug",slug).eq("is_active",true).maybeSingle();
-  if(!department) notFound();
-  const {data:specialty}=await client.from("specializations").select("*").eq("department_id",department.id).eq("slug",specialtySlug).eq("is_active",true).maybeSingle();
+  let {data:department}=await client.from("departments").select("*").eq("slug",slug).eq("is_active",true).maybeSingle();
+  if(!department) {
+    const fallback = DEPARTMENT_FALLBACKS.find(d => d.slug === slug);
+    if (fallback) department = fallback as any;
+    else notFound();
+  }
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(specialtySlug);
+  let specialtyQuery = client.from("specializations").select("*").eq("is_active", true);
+  if (isUuid) {
+    specialtyQuery = specialtyQuery.eq("id", specialtySlug);
+  } else {
+    specialtyQuery = specialtyQuery.eq("slug", specialtySlug);
+  }
+  if (department.id) {
+    specialtyQuery = specialtyQuery.eq("department_id", department.id);
+  }
+  let {data:specialty} = await specialtyQuery.maybeSingle();
+  if (!specialty && department.id) {
+    const { data: altSpecialty } = await client.from("specializations").select("*").eq(isUuid ? "id" : "slug", specialtySlug).eq("is_active", true).maybeSingle();
+    if (altSpecialty) specialty = altSpecialty;
+  }
   if(!specialty) notFound();
   const [programs,research,news,events,gallery,docs,tables]=await Promise.all([
     client.from("programs").select("*").eq("specialization_id",specialty.id).eq("is_active",true),
@@ -24,10 +43,10 @@ export default async function SpecialtyPage({params}:{params:Promise<{slug:strin
   ]);
   const updates=[...(news.data??[]).map((x:any)=>({...x,_kind:"news"})),...(events.data??[]).map((x:any)=>({...x,_kind:"events"}))];
   const groups:{id:string;title:string;items:any[];href:string;Icon:LucideIcon;label:(x:any)=>string;detail:(x:any)=>string;link:(x:any)=>string;media?:(x:any)=>string|undefined}[]=[
-    {id:"programmes",title:"Programmes",items:programs.data??[],href:`/departments/${department.slug}/programs?specialty=${specialty.id}`,Icon:BookOpen,label:(x)=>x.name,detail:(x)=>[x.degree,x.cycle,x.level,x.description].filter(Boolean).join(" · "),link:(x)=>`/departments/${department.slug}/programs/${x.slug}`,media:(x)=>x.image_path},
-    {id:"research",title:"Research",items:research.data??[],href:`/departments/${department.slug}/research?specialty=${specialty.id}`,Icon:FlaskConical,label:(x)=>x.title,detail:(x)=>x.summary||x.details||"Research connected to this specialty.",link:(x)=>`/departments/${department.slug}/research/${x.slug}`,media:(x)=>x.image_path},
-    {id:"news-events",title:"News & Events",items:updates,href:`/departments/${department.slug}/news-events?specialty=${specialty.id}`,Icon:Newspaper,label:(x)=>x.title,detail:(x)=>x.excerpt||x.description||"Updates from this specialty.",link:(x)=>`/departments/${department.slug}/${x._kind}/${x.slug}`,media:(x)=>x.image_path},
-    {id:"gallery",title:"Gallery",items:gallery.data??[],href:`/departments/${department.slug}/gallery?specialty=${specialty.id}`,Icon:Images,label:(x)=>x.title,detail:(x)=>x.description||"Images from teaching, research and specialty activities.",link:(x)=>`/departments/${department.slug}/gallery/${x.id}`,media:(x)=>x.image_path},
+    {id:"programmes",title:"Programmes",items:programs.data??[],href:`/departments/${department.slug}/programs?specialty=${specialty.id}`,Icon:BookOpen,label:(x)=>x.name,detail:(x)=>[x.degree,x.cycle,x.level,x.description].filter(Boolean).join(" · "),link:(x)=>`/departments/${department.slug}/programs/${x.slug||x.id}`,media:(x)=>x.image_path},
+    {id:"research",title:"Research",items:research.data??[],href:`/departments/${department.slug}/research?specialty=${specialty.id}`,Icon:FlaskConical,label:(x)=>x.title,detail:(x)=>x.summary||x.details||"Research connected to this specialty.",link:(x)=>`/departments/${department.slug}/research/${x.slug||x.id}`,media:(x)=>x.image_path},
+    {id:"news-events",title:"News & Events",items:updates,href:`/departments/${department.slug}/news-events?specialty=${specialty.id}`,Icon:Newspaper,label:(x)=>x.title,detail:(x)=>x.excerpt||x.description||"Updates from this specialty.",link:(x)=>`/departments/${department.slug}/${x._kind}/${x.slug||x.id}`,media:(x)=>x.image_path},
+    {id:"gallery",title:"Gallery",items:gallery.data??[],href:`/departments/${department.slug}/gallery?specialty=${specialty.id}`,Icon:Images,label:(x)=>x.title,detail:(x)=>x.description||"Images from teaching, research and specialty activities.",link:(x)=>`/departments/${department.slug}/gallery/${x.slug||x.id}`,media:(x)=>x.image_path},
     {id:"documentation",title:"Documentation",items:docs.data??[],href:`/departments/${department.slug}/documents?specialty=${specialty.id}`,Icon:FileText,label:(x)=>x.title,detail:(x)=>x.description||"Documents and learning resources for this specialty.",link:(x)=>`/departments/${department.slug}/documents/${x.id}`},
     {id:"timetables",title:"Timetables",items:tables.data??[],href:`/departments/${department.slug}/timetables?specialty=${specialty.id}`,Icon:Clock3,label:(x)=>`${x.level} · ${x.semester}`,detail:(x)=>`Academic year ${x.academic_year}`,link:()=>`/departments/${department.slug}/timetables?specialty=${specialty.id}`,media:()=>undefined},
   ];

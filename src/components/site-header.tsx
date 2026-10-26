@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X, ChevronDown } from "lucide-react";
-import Image from "next/image";
 import { LanguageSwitcher } from "@/components/language-provider";
 
 const links = [["Home", "/"], ["About Us", "/about"], ["Programs", "/programs"], ["Research", "/research"], ["News & Events", "/news-events"], ["Departments", "/departments"]] as const;
@@ -15,7 +14,7 @@ export function SiteHeader() {
   if (pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/admin-uy1-")) return null;
   return <><div className="announcement" suppressHydrationWarning><span className="announcement-dot" /> Official website of the Faculty of Science <span className="announcement-separator">·</span> University of Yaoundé I</div><header className="site-header"><div className="nav-shell">
     <Link href="/" className="brand" aria-label="Faculty of Science homepage" onClick={() => setOpen(false)}>
-      <span className="brand-seal"><Image src="/uy1-seal.png" alt="University of Yaoundé I seal" width={46} height={46} priority /></span>
+      <img className="brand-seal-image" src="/uy1-seal-transparent.png" alt="" aria-hidden="true" />
       <span className="brand-copy"><strong>FACULTY OF SCIENCE</strong><small>UNIVERSITY OF YAOUNDÉ I</small></span>
     </Link>
     <button className="mobile-menu" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={22} /> : <Menu size={22} />}</button>
